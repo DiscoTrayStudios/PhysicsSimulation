@@ -105,7 +105,7 @@ public class SpawnScript : MonoBehaviour
         g.startVelocity =
            Quaternion.Euler(0, 0, 90) * toCenter.normalized *
            orbitConstant / Mathf.Sqrt(distToCenter);
-        temp = allcol[(int)Mathf.Round(Random.Range(0, 8))];
+        temp = allcol[(int)Mathf.Round(Random.Range(1, 8))];
         planet.GetComponentInChildren<SpriteRenderer>().color = temp;
 
         return g;
