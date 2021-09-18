@@ -9,18 +9,22 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
-    static float G = -1f;
-    float cameraShiftTolerance = 3;
-    float zoomInTolerance = .4f;
+
+    // Camera Controls
+    float cameraShiftTolerance = .09f;
+    float zoomInTolerance = .45f;
     float zoomOutTolerance = .1f;
-    int zoomTicks = 0;
-    const int zoomDelay = 5;
+    int zoomTicks = 1;
+    const int zoomDelay = 0;
     const float SIM_TIME_STEP = 1 / 100;
+    public Camera camera;
 
     public static GameManager Instance { get; private set; }
+
+    // Gravity
+    static float G = -1f;
     List<Gravity> physObjects;
     Dictionary<Gravity, GameObject> planetControllers = new Dictionary<Gravity, GameObject>();
-    public Camera camera;
     
 
     public GameObject startButton, creditsButton, howToButton, volumeButton, volumeButtontemp, backButton, timeSlider, menuButton, showButton, hideButton, pauseMenu, autoCameraToggle;
@@ -110,6 +114,8 @@ public class GameManager : MonoBehaviour
         {
             physObjects.Add(g);
             NewPlanetController(g, "Normal " + g.getTag());
+            ++ObjectCounter;
+            Debug.Log("Objects: " + ObjectCounter);
         }
 
         SetUpCoM();
@@ -124,7 +130,9 @@ public class GameManager : MonoBehaviour
         }
         else if (temp == new Vector4(0, 0, 0, 1))
         {
-            return "Black";
+            // removed the black option because it is hard to see against the blackness of space. 
+            //return "Black";
+            return "Normal";
         }
         else if (temp == new Vector4(0, 0, 1, 1))
         {
@@ -178,7 +186,7 @@ public class GameManager : MonoBehaviour
         CullFaroffObjects();
         centerOfMassIndicator.transform.position = CenterOfSystem();
     }
-
+    //Get rid of anything too far from the center of the system
     void CullFaroffObjects()
     {
         Vector2 c = CenterOfSystem();
@@ -192,7 +200,6 @@ public class GameManager : MonoBehaviour
 
         foreach (Gravity go in toRemove) {
             DestroyBody(go);
-            --ObjectCounter;
         }
     }
 
@@ -209,6 +216,7 @@ public class GameManager : MonoBehaviour
         planettemp = SpawnScript.getPrefab();
         physObjects.Add(g);
         ++ObjectCounter;
+        Debug.Log("Objects: " + ObjectCounter);
         NewPlanetController(g, colorToString(colortemp) + "  " + planettemp);
     }
 
@@ -218,6 +226,7 @@ public class GameManager : MonoBehaviour
         Destroy(planetControllers[g]);
         planetControllers.Remove(g);
         --ObjectCounter;
+        Debug.Log("Objects: " + ObjectCounter);
     }
 
     public Vector2 CenterOfSystem()
@@ -297,7 +306,7 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    // Change in velocity
     public Vector2 deltaV(Gravity obj)
     {
         Vector2 c = Vector2.zero;
@@ -382,18 +391,6 @@ public class GameManager : MonoBehaviour
         howToBackground.SetActive(true);
     }
 
-    public void volumeOnClick()
-    {
-        if (volumeSlider.activeSelf == true)
-        {
-            volumeSlider.SetActive(false);
-        }
-        else
-        {
-            volumeSlider.SetActive(true);
-        }
-    }
-
     public void backOnClick()
     {
         titleText.SetActive(true);
@@ -417,7 +414,7 @@ public class GameManager : MonoBehaviour
     public void deleteOnClick(GameObject container = null)
     {
         int check1 = planetControllers.Count;
-        Debug.Log("we have this many:" + check1);
+        Debug.Log("planetControllers.Count(Before):" + check1);
         foreach (KeyValuePair<Gravity, GameObject> item in planetControllers)
         {
             if (container = item.Value)
@@ -428,11 +425,12 @@ public class GameManager : MonoBehaviour
                 Destroy(item.Key);
                 Destroy(item.Value);
                 --ObjectCounter;
+                Debug.Log("Objects: " + ObjectCounter);
                 break;
             }
         }
         int check2 = planetControllers.Count;
-        Debug.Log("we have this many:" + check2);
+        Debug.Log("planetControllers.Count(After):" + check2);
     }
 
     public void setTimeScale(float t)
@@ -485,7 +483,18 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
     }
-
+    // Volume Controls
+    public void volumeOnClick()
+    {
+        if (volumeSlider.activeSelf == true)
+        {
+            volumeSlider.SetActive(false);
+        }
+        else
+        {
+            volumeSlider.SetActive(true);
+        }
+    }
     public void setVolume(float sliderValue)
     {
         mixer.SetFloat("backgroundVolume", (Mathf.Log10(sliderValue) * 20));
