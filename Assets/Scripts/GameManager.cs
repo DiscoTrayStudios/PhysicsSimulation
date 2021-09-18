@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     float zoomOutTolerance = .1f;
     int zoomTicks = 1;
     const int zoomDelay = 0;
-    const float SIM_TIME_STEP = 1 / 500;
+    const float SIM_TIME_STEP = 1 / 100;
     public Camera camera;
 
     public static GameManager Instance { get; private set; }
