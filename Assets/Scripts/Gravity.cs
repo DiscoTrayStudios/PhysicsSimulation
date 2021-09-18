@@ -113,7 +113,7 @@ public class Gravity : MonoBehaviour
 
     void SetSize()
     {
-        float screenSize = 1+Mathf.Log(rbody.mass)/4;
+        float screenSize = 1+Mathf.Log(rbody.mass)/6;
         this.gameObject.transform.localScale = Vector3.one * screenSize;
     }
 
