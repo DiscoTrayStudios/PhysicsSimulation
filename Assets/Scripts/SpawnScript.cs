@@ -73,6 +73,7 @@ public class SpawnScript : MonoBehaviour
 
     static public Gravity SpawnNewPlanet(Vector2 position, GameObject prefab)
     {
+        // I thought that removing the black option here (0,0,0,1) would stop planets spawning as black, but it didn't work here either. ??
         allcol[0] = new Color(0, 0, 0, 1);
         allcol[1] = new Color(0, 0, 1, 1);
         allcol[2] = new Color(0, 1, 1, 1);
@@ -105,6 +106,7 @@ public class SpawnScript : MonoBehaviour
         g.startVelocity =
            Quaternion.Euler(0, 0, 90) * toCenter.normalized *
            orbitConstant / Mathf.Sqrt(distToCenter);
+        // Here is how I tried to remove black as well.
         temp = allcol[(int)Mathf.Round(Random.Range(1, 8))];
         planet.GetComponentInChildren<SpriteRenderer>().color = temp;
 
