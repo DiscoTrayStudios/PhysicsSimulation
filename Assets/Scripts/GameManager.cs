@@ -16,8 +16,10 @@ public class GameManager : MonoBehaviour
     float zoomOutTolerance = .1f;
     int zoomTicks = 1;
     const int zoomDelay = 0;
-    const float SIM_TIME_STEP = 1 / 100;
     public Camera camera;
+
+    // Changes the time steps of the simulation? Can't tell
+    const float SIM_TIME_STEP = 1 / 100;
 
     public static GameManager Instance { get; private set; }
 
@@ -124,6 +126,7 @@ public class GameManager : MonoBehaviour
         SetUpCoM();
     }
 
+    // I tried to remove the black option, but changing it here didn't seem to do it? 
     public string colorToString(Color color)
     {
         Vector4 temp = color;
@@ -133,7 +136,7 @@ public class GameManager : MonoBehaviour
         }
         else if (temp == new Vector4(0, 0, 0, 1))
         {
-            // removed the black option because it is hard to see against the blackness of space. 
+            // removed the black option because it is hard to see against the blackness of space. (didn't work)
             //return "Black";
             return "Normal";
         }
