@@ -312,7 +312,9 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     // Change in velocity
+    //Seems to be focus on gravity
     public Vector2 deltaV(Gravity obj)
     {
         Vector2 c = Vector2.zero;
