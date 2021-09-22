@@ -46,12 +46,29 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 
 	private DragAndDropItem myDadItem;										// Item of this DaD cell
 
+
+    public bool getInteractable()
+    {
+        return interactable;
+    }
+
+    public void setInteractable(bool value)
+    {
+        interactable = value;
+
+        //if (interactable)
+        //{
+        //    myDadItem = item;
+        //}
+    }
+
     void OnEnable()
     {
-        DragAndDropItem.OnItemDragStartEvent += OnAnyItemDragStart;         // Handle any item drag start
-        DragAndDropItem.OnItemDragEndEvent += OnAnyItemDragEnd;             // Handle any item drag end
-		UpdateMyItem();
-		UpdateBackgroundState();
+            DragAndDropItem.OnItemDragStartEvent += OnAnyItemDragStart;         // Handle any item drag start
+            DragAndDropItem.OnItemDragEndEvent += OnAnyItemDragEnd;             // Handle any item drag end
+            UpdateMyItem();
+            UpdateBackgroundState();
+        
     }
 
     void OnDisable()
@@ -67,18 +84,21 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
     /// <param name="item"> dragged item </param>
     private void OnAnyItemDragStart(DragAndDropItem item)
     {
-		UpdateMyItem();
-		if (myDadItem != null)
+        if (interactable)
         {
-			myDadItem.MakeRaycast(false);                                  	// Disable item's raycast for correct drop handling
-			if (myDadItem == item)                                         	// If item dragged from this cell
+            UpdateMyItem();
+            if (myDadItem != null)
             {
-                // Check cell's type
-                switch (cellType)
+                myDadItem.MakeRaycast(false);                                   // Disable item's raycast for correct drop handling
+                if (myDadItem == item)                                          // If item dragged from this cell
                 {
-                    case CellType.DropOnly:
-                        DragAndDropItem.icon.SetActive(false);              // Item can not be dragged. Hide icon
-                        break;
+                    // Check cell's type
+                    switch (cellType)
+                    {
+                        case CellType.DropOnly:
+                            DragAndDropItem.icon.SetActive(false);              // Item can not be dragged. Hide icon
+                            break;
+                    }
                 }
             }
         }
@@ -90,12 +110,15 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
     /// <param name="item"> dragged item </param>
     private void OnAnyItemDragEnd(DragAndDropItem item)
     {
-		UpdateMyItem();
-		if (myDadItem != null)
+        if (interactable)
         {
-			myDadItem.MakeRaycast(true);                                  	// Enable item's raycast
+            UpdateMyItem();
+            if (myDadItem != null)
+            {
+                myDadItem.MakeRaycast(true);                                    // Enable item's raycast
+            }
+            UpdateBackgroundState();
         }
-		UpdateBackgroundState();
     }
 
     /// <summary>
@@ -385,13 +408,5 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 		}
 	}
 
-    public bool getInteractable()
-    {
-        return interactable;
-    }
-
-    public void setInteractable(bool value)
-    {
-        interactable = value;
-    }
+    
 }
