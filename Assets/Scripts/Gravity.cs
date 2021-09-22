@@ -10,6 +10,7 @@ public class Gravity : MonoBehaviour
     TrailRenderer trail;
     internal bool beingDragged;
     public GameObject explosion;
+    float screenSize;
 
     // Start is called before the first frame update
     void Start()
@@ -79,30 +80,30 @@ public class Gravity : MonoBehaviour
 
     public void changePosX(float m)
     {
-        Vector3 temp = new Vector3(m, rbody.position.y, 0);
-        rbody.transform.position = temp;
-        SetSize();
+        //Vector3 temp = new Vector3(m, rbody.position.y, 0);
+        rbody.transform.position = new Vector3(m, rbody.position.y, 0);
+        //SetSize();
     }
 
     public void changePosY(float m)
     {
-        Vector3 temp = new Vector3(rbody.position.x, m, 0);
-        rbody.position = temp;
-        SetSize();
+        //Vector3 temp = new Vector3(rbody.position.x, m, 0);
+        rbody.position = new Vector3(rbody.position.x, m, 0);
+        //SetSize();
     }
 
     public void changeVelocityX(float m)
     {
-        Vector3 temp = new Vector3(m, rbody.velocity.y, 0);
-        rbody.velocity = temp;
-        SetSize();
+        //Vector3 temp = new Vector3(m, rbody.velocity.y, 0);
+        rbody.velocity = new Vector3(m, rbody.velocity.y, 0);
+        //SetSize();
     }
 
     public void changeVelocityY(float m)
     {
-        Vector3 temp = new Vector3(rbody.velocity.x, m, 0);
-        rbody.velocity = temp;
-        SetSize();
+        //Vector3 temp = new Vector3(rbody.velocity.x, m, 0);
+        rbody.velocity = new Vector3(rbody.velocity.x, m, 0);
+        //SetSize();
     }
 
 
@@ -113,7 +114,7 @@ public class Gravity : MonoBehaviour
 
     void SetSize()
     {
-        float screenSize = 1+Mathf.Log(rbody.mass)/6;
+        screenSize = 1+Mathf.Log(rbody.mass)/6;
         this.gameObject.transform.localScale = Vector3.one * screenSize;
     }
 

@@ -74,15 +74,15 @@ public class SpawnScript : MonoBehaviour
     static public Gravity SpawnNewPlanet(Vector2 position, GameObject prefab)
     {
         // I thought that removing the black option here (0,0,0,1) would stop planets spawning as black, but it didn't work here either. ??
-        allcol[0] = new Color(0, 0, 0, 1);
-        allcol[1] = new Color(0, 0, 1, 1);
-        allcol[2] = new Color(0, 1, 1, 1);
-        allcol[3] = new Color(0.5f, 0.5f, 0.5f, 1);
-        allcol[4] = new Color(0, 1, 0, 1);
-        allcol[5] = new Color(1, 0, 1, 1);
-        allcol[6] = new Color(1, 0, 0, 1);
-        allcol[7] = new Color(1, 0.92f, 0.016f, 1);
-        allcol[8] = new Color(1, 1, 1, 1);
+        //allcol[0] = new Color(0, 0, 0, 1);
+        //allcol[1] = new Color(0, 0, 1, 1);
+        //allcol[2] = new Color(0, 1, 1, 1);
+        //allcol[3] = new Color(0.5f, 0.5f, 0.5f, 1);
+        //allcol[4] = new Color(0, 1, 0, 1);
+        //allcol[5] = new Color(1, 0, 1, 1);
+        //allcol[6] = new Color(1, 0, 0, 1);
+        //allcol[7] = new Color(1, 0.92f, 0.016f, 1);
+        //allcol[8] = new Color(1, 1, 1, 1);
         GameObject planet = Instantiate(prefab);
         planettemp = prefab.tag;
         Gravity g = planet.GetComponentInChildren<Gravity>();
@@ -107,7 +107,7 @@ public class SpawnScript : MonoBehaviour
            Quaternion.Euler(0, 0, 90) * toCenter.normalized *
            orbitConstant / Mathf.Sqrt(distToCenter);
         // Here is how I tried to remove black as well.
-        temp = allcol[(int)Mathf.Round(Random.Range(1, 8))];
+        temp = new Color(1, 1, 1, 1); //allcol[(int)Mathf.Round(Random.Range(1, 8))];
         planet.GetComponentInChildren<SpriteRenderer>().color = temp;
 
         return g;
@@ -115,7 +115,8 @@ public class SpawnScript : MonoBehaviour
 
     static public Color getColor()
     {
-        return temp;
+        return new Color(1, 1, 1, 1);
+        //return temp;
     }
 
     static public string getPrefab()
