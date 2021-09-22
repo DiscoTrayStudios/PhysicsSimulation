@@ -42,6 +42,8 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 	[Tooltip("This cell has unlimited amount of items")]
     public bool unlimitedSource = false;                                    // Item from this cell will be cloned on drag start
 
+    public bool interactable = true;
+
 	private DragAndDropItem myDadItem;										// Item of this DaD cell
 
     void OnEnable()
@@ -382,4 +384,14 @@ public class DragAndDropCell : MonoBehaviour, IDropHandler
 			secondCell.UpdateBackgroundState();
 		}
 	}
+
+    public bool getInteractable()
+    {
+        return interactable;
+    }
+
+    public void setInteractable(bool value)
+    {
+        interactable = value;
+    }
 }

@@ -955,6 +955,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 268b36e7797a35e499e99cf551ad4521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panel: {fileID: 8601627627284845348}
   trashCan: {fileID: 3485583137685352785}
   massLabel: {fileID: 5612545007436476057}
   massSlider: {fileID: 6650088174684909778}
