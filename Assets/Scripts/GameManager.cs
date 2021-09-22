@@ -200,13 +200,14 @@ public class GameManager : MonoBehaviour
         foreach (Gravity go in physObjects) {
             if ((go.GetComponent<Rigidbody2D>().position - c).magnitude > 40) 
             {
-                toRemove.Add(go);
+                DestroyBody(go);
+                //toRemove.Add(go);
             }
         }
 
-        foreach (Gravity go in toRemove) {
-            DestroyBody(go);
-        }
+        //foreach (Gravity go in toRemove) {
+        //    DestroyBody(go);
+        //}
     }
 
     public void NewPlanetController(Gravity g, string name) {
@@ -237,6 +238,7 @@ public class GameManager : MonoBehaviour
 
     public Vector2 CenterOfSystem()
     {
+        // This may use up a lot of RAM 
         Vector2 v = Vector2.zero;
         float totalMass = 0.0f;
         foreach (Gravity go in physObjects)
@@ -316,13 +318,15 @@ public class GameManager : MonoBehaviour
     public Vector2 deltaV(Gravity obj)
     {
         Vector2 c = Vector2.zero;
-
+        // Definitly uses a lot of RAM, is there a way to only call the data once? 
         foreach (Gravity go in physObjects)
         {
-            Vector2 diff = obj.GetComponent<Rigidbody2D>().position - go.GetComponent<Rigidbody2D>().position;
-            float rsq = diff.sqrMagnitude;
             if (go != obj)
+            {
+                Vector2 diff = obj.GetComponent<Rigidbody2D>().position - go.GetComponent<Rigidbody2D>().position;
+                float rsq = diff.sqrMagnitude;
                 c += go.GetComponent<Rigidbody2D>().mass * diff.normalized / rsq;
+            }
         }
 
         return G * c * Time.fixedDeltaTime;
