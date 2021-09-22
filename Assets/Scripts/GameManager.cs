@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
     Vector3 startCameraPos;
     bool draggingNothing;
 
+
+    public GameObject tutorialInfo;
+
     private void Awake()
     {
         if (Instance == null)
@@ -343,6 +346,10 @@ public class GameManager : MonoBehaviour
         showButton.SetActive(true);
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
+        if (presetLevels[selectedLevel].Equals("Tutorial"))
+        {
+            tutorialInfo.SetActive(true);
+        }
         Destroy(volumeButtontemp);
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
     }
@@ -359,6 +366,7 @@ public class GameManager : MonoBehaviour
         showButton.SetActive(false);
         scrollView.SetActive(false);
         cellContainer.SetActive(false);
+        tutorialInfo.SetActive(false);
         foreach (Transform child in Content.transform)
         {
             GameObject.Destroy(child.gameObject);
@@ -404,6 +412,7 @@ public class GameManager : MonoBehaviour
         howToText.SetActive(false);
         howToBackground.SetActive(false);
         creditsBackground.SetActive(false);
+        
     }
 
     public void pauseOnClick()
@@ -459,20 +468,20 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void menuToggle()
+    public void menuHide()
     {
-        if (pauseMenu.activeSelf)
-        {
             pauseMenu.SetActive(false);
             showButton.SetActive(true);
-        }
-        else
-        {
-            pauseMenu.SetActive(true);
-            showButton.SetActive(false);
-
-        }
+        
     }
+
+    public void menuShow()
+    {
+        pauseMenu.SetActive(true);
+        showButton.SetActive(false);
+
+    }
+
 
     IEnumerator LoadYourAsyncScene(string scene)
     {
