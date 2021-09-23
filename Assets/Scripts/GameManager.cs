@@ -63,11 +63,19 @@ public class GameManager : MonoBehaviour
     Vector3 startCameraPos;
     bool draggingNothing;
 
-
     public GameObject tutorialInfo;
+
+    // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
+    Vector2 centerOfSystem;
+
+    private int frames = 0;
 
     private void Awake()
     {
+        // Frame Rate Limiter
+        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        Application.targetFrameRate = 30;
+
         if (Instance == null)
         {
             Instance = this;
@@ -92,21 +100,24 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
+        if (frames % 5 == 0)
         {
-            Gravity g = keyValue.Key;
-            GameObject pc = keyValue.Value;
+            foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
+            {
+                Gravity g = keyValue.Key;
+                GameObject pc = keyValue.Value;
 
-            UIControllerSetup ui = pc.GetComponent<UIControllerSetup>();
-            ui.massText.GetComponent<Text>().text = "Mass: " + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
-            ui.posXText.GetComponent<Text>().text = "X: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
-            ui.posYText.GetComponent<Text>().text = "Y: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
-            ui.velocityXText.GetComponent<Text>().text = "Vx: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
-            ui.velocityYText.GetComponent<Text>().text = "Vy: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
-        }
-        if (physObjects.Count > 0)
-        {
-            CameraReposition();
+                UIControllerSetup ui = pc.GetComponent<UIControllerSetup>();
+                ui.massText.GetComponent<Text>().text = "Mass: " + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
+                ui.posXText.GetComponent<Text>().text = "X: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
+                ui.posYText.GetComponent<Text>().text = "Y: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
+                ui.velocityXText.GetComponent<Text>().text = "Vx: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
+                ui.velocityYText.GetComponent<Text>().text = "Vy: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+            }
+            if (physObjects.Count > 0)
+            {
+                CameraReposition();
+            }
         }
     }
 
@@ -134,20 +145,20 @@ public class GameManager : MonoBehaviour
         {
             return "Red";
         }
-        else if (temp == new Vector4(0, 0, 0, 1))
-        {
+        //else if (temp == new Vector4(0, 0, 0, 1))
+        //{
             // removed the black option because it is hard to see against the blackness of space. (didn't work)
             //return "Black";
-            return "Normal";
-        }
+        //    return "Normal";
+        //}
         else if (temp == new Vector4(0, 0, 1, 1))
         {
             return "Blue";
         }
-        else if (temp == new Vector4(0.5f, 0.5f, 0.5f, 1))
-        {
-            return "Gray";
-        }
+        //else if (temp == new Vector4(0.5f, 0.5f, 0.5f, 1))
+        //{
+        //    return "Gray";
+        //}
         else if (temp == new Vector4(0, 1, 0, 1))
         {
             return "Green";
@@ -162,7 +173,9 @@ public class GameManager : MonoBehaviour
         }
         else if (temp == new Vector4(1, 1, 1, 1))
         {
-            return "White";
+            // This is where it gets the color string on the left menu. White looks the same as normal.
+            //return "White" 
+            return "Normal";
         }
         else if (temp == new Vector4(1, 0.92f, 0.016f, 1))
         {
@@ -174,7 +187,7 @@ public class GameManager : MonoBehaviour
     }
 
     void SetUpCoM() {
-        centerOfMassIndicator = Instantiate(CenterOfMassPrefab, CenterOfSystem(), Quaternion.identity);
+        centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
         SpriteRenderer sr = centerOfMassIndicator.gameObject.GetComponent<SpriteRenderer>();
         //CoM is slightly translucent
         sr.color = new Color(1, 1, 1, .5f);
@@ -189,16 +202,31 @@ public class GameManager : MonoBehaviour
         {
             LoadScene();
         }
-        CullFaroffObjects();
-        centerOfMassIndicator.transform.position = CenterOfSystem();
+        frames++;
+        if (frames >= 30)
+        {
+            CullFaroffObjects();
+            centerOfSystem = CenterOfSystem();
+            centerOfMassIndicator.transform.position = centerOfSystem;
+            frames = 0;
+        }
+
+        // Made it slower
+    //    positions = new Vector2[ObjectCounter];
+    //    int i = 0;
+    //    foreach (Gravity go in physObjects)
+    //    {
+    //        positions[i] = go.GetComponent<Rigidbody2D>().position;
+    //        i++;
+    //    }
     }
     //Get rid of anything too far from the center of the system
     void CullFaroffObjects()
     {
-        Vector2 c = CenterOfSystem();
+        //Vector2 c = CenterOfSystem();
         HashSet<Gravity> toRemove = new HashSet<Gravity>();
         foreach (Gravity go in physObjects) {
-            if ((go.GetComponent<Rigidbody2D>().position - c).magnitude > 40) 
+            if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 40) 
             {
                 DestroyBody(go);
                 //toRemove.Add(go);
@@ -225,6 +253,14 @@ public class GameManager : MonoBehaviour
         ++ObjectCounter;
         Debug.Log("Objects: " + ObjectCounter);
         NewPlanetController(g, colorToString(colortemp) + "  " + planettemp);
+        // Made it slower
+        //masses = new float[ObjectCounter];
+        //int i = 0;
+        //foreach (Gravity go in physObjects)
+        //{
+        //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
+        //    i++;
+        //}
     }
 
     public void DestroyBody(Gravity g) {
@@ -234,11 +270,18 @@ public class GameManager : MonoBehaviour
         planetControllers.Remove(g);
         --ObjectCounter;
         Debug.Log("Objects: " + ObjectCounter);
+        // Made it slower
+        //masses = new float[ObjectCounter];
+        //int i = 0;
+        //foreach (Gravity go in physObjects)
+        //{
+        //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
+        //    i++;
+        //}
     }
 
     public Vector2 CenterOfSystem()
     {
-        // This may use up a lot of RAM 
         Vector2 v = Vector2.zero;
         float totalMass = 0.0f;
         foreach (Gravity go in physObjects)
@@ -246,6 +289,7 @@ public class GameManager : MonoBehaviour
             Vector3 p = go.gameObject.transform.position;
             v += go.GetComponent<Rigidbody2D>().mass * new Vector2(p.x, p.y);
             totalMass += go.GetComponent<Rigidbody2D>().mass;
+            //Debug.Log("CenterOfSystem");
         }
         if (physObjects.Count > 0) v /= totalMass;
         return v;
@@ -256,7 +300,7 @@ public class GameManager : MonoBehaviour
         if (AutoCamera)
         {
 
-            Vector3 center = CenterOfSystem();
+            Vector3 center = centerOfSystem;
             center.z = camera.transform.position.z;
             if ((camera.transform.position - center).magnitude > cameraShiftTolerance)
                 camera.transform.position = Vector3.Lerp(camera.transform.position, center, .005f);
@@ -319,16 +363,27 @@ public class GameManager : MonoBehaviour
     {
         Vector2 c = Vector2.zero;
         // Definitly uses a lot of RAM, is there a way to only call the data once? 
+        // Collect each position once and then compare?
         foreach (Gravity go in physObjects)
         {
             if (go != obj)
             {
                 Vector2 diff = obj.GetComponent<Rigidbody2D>().position - go.GetComponent<Rigidbody2D>().position;
-                float rsq = diff.sqrMagnitude;
-                c += go.GetComponent<Rigidbody2D>().mass * diff.normalized / rsq;
+                //float rsq = diff.sqrMagnitude;
+                c += go.GetComponent<Rigidbody2D>().mass * diff.normalized / diff.sqrMagnitude;
+                //Debug.Log("deltaV");
             }
         }
-
+        //Made it slower 
+        //Vector2 ob = obj.GetComponent<Rigidbody2D>().position;
+        //for (int i = 0; i < ObjectCounter; i++)
+		//{
+        //    if (ob != positions[i])
+        //    {
+        //        Vector2 diff = ob - positions[i];
+        //        c += masses[i] * diff.normalized / diff.sqrMagnitude;
+        //    }
+		//}
         return G * c * Time.fixedDeltaTime;
     }
 
