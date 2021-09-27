@@ -74,6 +74,8 @@ public class SpawnScript : MonoBehaviour
     static public Gravity SpawnNewPlanet(Vector2 position, GameObject prefab)
     {
         // I thought that removing the black option here (0,0,0,1) would stop planets spawning as black, but it didn't work here either. ??
+        // Maybe there should be a drop down box to choose a color of the planet rather than making it automatic. 
+        // This way there will be more customization which would make it easier for the player to keep track of their planets.
         //allcol[0] = new Color(0, 0, 0, 1); //Black
         //allcol[3] = new Color(0.5f, 0.5f, 0.5f, 1); //Gray
         //allcol[0] = new Color(0, 0, 1, 1); //Blue
@@ -101,7 +103,7 @@ public class SpawnScript : MonoBehaviour
 
         Vector2 toCenter = GameManager.Instance.deltaV(g);
 
-        float distToCenter = (GameManager.Instance.CenterOfSystem() - position).magnitude;
+        float distToCenter = (GameManager.Instance.centerOfSystem - position).magnitude;
 
         g.startVelocity =
            Quaternion.Euler(0, 0, 90) * toCenter.normalized *

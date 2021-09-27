@@ -58,21 +58,22 @@ public class GameManager : MonoBehaviour
 
     Vector2 mouseDragPos;
 
-    int ObjectCounter = 0;
-    bool AutoCamera = true;
-    Vector3 startCameraPos;
-    bool draggingNothing;
+    private int ObjectCounter = 0;
+    private int MAXOBJECTCOUNT = 10;
+    private bool AutoCamera = true;
+    private Vector3 startCameraPos;
+    private bool draggingNothing;
 
     public GameObject tutorialInfo;
 
     // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
-    Vector2 centerOfSystem;
+    public Vector2 centerOfSystem;
 
     private int frames = 0;
 
     private void Awake()
     {
-        // Frame Rate Limiter
+        // Frame Rate Limiter (30 fps)
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 30;
 
@@ -100,6 +101,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        // Every 5 frames the text updates and the camera repositions
         if (frames % 5 == 0)
         {
             foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
@@ -114,10 +116,10 @@ public class GameManager : MonoBehaviour
                 ui.velocityXText.GetComponent<Text>().text = "Vx: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
                 ui.velocityYText.GetComponent<Text>().text = "Vy: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
             }
-            if (physObjects.Count > 0)
-            {
-                CameraReposition();
-            }
+        }
+        if (physObjects.Count > 0)
+        {
+            CameraReposition();
         }
     }
 
@@ -174,6 +176,8 @@ public class GameManager : MonoBehaviour
         else if (temp == new Vector4(1, 1, 1, 1))
         {
             // This is where it gets the color string on the left menu. White looks the same as normal.
+            // For now everything will be white or normal. This may be changed in the future. 
+            // Maybe color can be a thing that the player changes instead of it being random? It's an idea.
             //return "White" 
             return "Normal";
         }
@@ -202,6 +206,7 @@ public class GameManager : MonoBehaviour
         {
             LoadScene();
         }
+        // Increase frames by one; every 30 frames update these functions and set frames to 0
         frames++;
         if (frames >= 30)
         {
@@ -220,7 +225,9 @@ public class GameManager : MonoBehaviour
     //        i++;
     //    }
     }
+
     //Get rid of anything too far from the center of the system
+    // Called once every 30 frames (frame cap is at 30 fps)
     void CullFaroffObjects()
     {
         //Vector2 c = CenterOfSystem();
@@ -245,22 +252,26 @@ public class GameManager : MonoBehaviour
         planetControllers.Add(g, pc);
     }
 
-    public void CreateBody(Vector2 pos, GameObject planet) {
-        Gravity g = SpawnScript.SpawnNewPlanet(pos, planet);
-        colortemp = SpawnScript.getColor();
-        planettemp = SpawnScript.getPrefab();
-        physObjects.Add(g);
-        ++ObjectCounter;
-        Debug.Log("Objects: " + ObjectCounter);
-        NewPlanetController(g, colorToString(colortemp) + "  " + planettemp);
-        // Made it slower
-        //masses = new float[ObjectCounter];
-        //int i = 0;
-        //foreach (Gravity go in physObjects)
-        //{
-        //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
-        //    i++;
-        //}
+    public void CreateBody(Vector2 pos, GameObject planet)
+    {
+        if (ObjectCounter < MAXOBJECTCOUNT)
+        { 
+            Gravity g = SpawnScript.SpawnNewPlanet(pos, planet);
+            colortemp = SpawnScript.getColor();
+            planettemp = SpawnScript.getPrefab();
+            physObjects.Add(g);
+            ++ObjectCounter;
+            Debug.Log("Objects: " + ObjectCounter);
+            NewPlanetController(g, colorToString(colortemp) + "  " + planettemp);
+            // Made it slower
+            //masses = new float[ObjectCounter];
+            //int i = 0;
+            //foreach (Gravity go in physObjects)
+            //{
+            //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
+            //    i++;
+            //}
+    }
     }
 
     public void DestroyBody(Gravity g) {
@@ -280,6 +291,7 @@ public class GameManager : MonoBehaviour
         //}
     }
 
+    // Called once every 30 frames (frame cap is at 30 fps)
     public Vector2 CenterOfSystem()
     {
         Vector2 v = Vector2.zero;
@@ -295,6 +307,7 @@ public class GameManager : MonoBehaviour
         return v;
     }
 
+    // Called once every 5 frames (frame cap is at 30 fps)
     public void CameraReposition()
     {
         if (AutoCamera)
@@ -558,6 +571,7 @@ public class GameManager : MonoBehaviour
         }
     }
     // Volume Controls
+    // Activates the volume slider by clicking the icon
     public void volumeOnClick()
     {
         if (volumeSlider.activeSelf == true)
@@ -569,6 +583,7 @@ public class GameManager : MonoBehaviour
             volumeSlider.SetActive(true);
         }
     }
+    // Sets the volume using the slider
     public void setVolume(float sliderValue)
     {
         mixer.SetFloat("backgroundVolume", (Mathf.Log10(sliderValue) * 20));
