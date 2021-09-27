@@ -96,7 +96,8 @@ public class Attractor : MonoBehaviour
             Destroy(collision.gameObject);
             if (spawnScript)
             {
-                spawnScript.SpawnNewPanet();
+                //spawnScript.SpawnNewPanet();
+                // SpawnNewPlanet() Does not exist right now, it must have in older versions of the game
             }
         }
     }
