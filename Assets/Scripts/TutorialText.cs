@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class TutorialText : MonoBehaviour
 {
@@ -28,6 +29,13 @@ public class TutorialText : MonoBehaviour
 
     private int clicks;
     private bool showClicked;
+    private bool timeStopped;
+    private bool cameraOn;
+    private bool constantDisable;
+    private bool past;
+    private List<GameObject> objects;
+    private List<string> bodies;
+    private GameObject center;
 
 
     // Start is called before the first frame update
@@ -36,13 +44,42 @@ public class TutorialText : MonoBehaviour
         clicks = 0;
         show.GetComponent<Button>().interactable = false;
         showClicked = false;
+        timeStopped = false;
+        cameraOn = true;
         clearText();
+        objects = new List<GameObject>();
+        constantDisable = false;
+        past = false;
+        bodies = new List<string>();
+        bodies.Add("Sun");
+        bodies.Add("Earth");
+        bodies.Add("Venus");
+        bodies.Add("Neptune");
+        bodies.Add("Saturn");
+        bodies.Add("Mars");
+        bodies.Add("Jupiter");
+        bodies.Add("Uranus");
+        bodies.Add("Mercury");
+        bodies.Add("Black Hole");
         click();
+
+        
+        
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (constantDisable)
+        {
+            Disable();
+            if (GameManager.Instance.getObjectCount() == 1)
+            {
+                toggleSun(false);
+            }
+        }
         
     }
 
@@ -51,6 +88,8 @@ public class TutorialText : MonoBehaviour
     {
         if (clicks == 0)
         {
+            
+            updateObjects();
             show.GetComponent<Button>().interactable = false;
             
             clearText();
@@ -59,6 +98,7 @@ public class TutorialText : MonoBehaviour
         }
         else if (clicks == 1)
         {
+            updateObjects();
             clearText();
             main.text = "Let's start by pressing the 'Show' button! This will make the interface with all data and astronomical body options appear.";
             show.GetComponent<Button>().interactable = true;
@@ -66,6 +106,7 @@ public class TutorialText : MonoBehaviour
         }
         else if (clicks == 2)
         {
+            updateObjects();
             if (showClicked)
             {
                 clearText();
@@ -79,13 +120,135 @@ public class TutorialText : MonoBehaviour
         }
         else if (clicks == 3)
         {
+            updateObjects();
             clearText();
-            lower.text = "Right above is all of the astronomical bodies that you can put into the universe. Let's try putting a sun into the world by " + 
+            upper.text = "Right above is all of the astronomical bodies that you can put into the universe. Let's try putting a sun into the world by " + 
                 "dragging and dropping the sun icon wherever you would like into the space below.";
             Disable();
             toggleSun(true);
+            constantDisable = true;
 
         }
+        else if (clicks == 4)
+        {
+            updateObjects();
+            constantDisable = false;
+            Disable();
+            Debug.Log(GameManager.Instance.getObjectCount());
+            if (GameManager.Instance.getObjectCount() == 1)
+            {
+                clearText();
+                lower.text = "Great! Now let's set the simulation speed to 0, which will stop all movement. You can do this by moving the slider all the way to the left.";
+                timeSlider.GetComponent<Slider>().onValueChanged.AddListener((i) => timeCompare(i));
+                toggleSun(false);
+                timeSlider.GetComponent<Slider>().interactable = true;
+            }
+            else
+            {
+                clicks = 3;
+                click();
+            }
+        }
+        else if (clicks == 5)
+        {
+            updateObjects();
+            if (timeStopped)
+            {
+                constantDisable = false;
+                clearText();
+                upper.text = "Now that time is essentially stopped, it is much easier to manipulate what is happening in the simulation";
+                Disable();
+            }
+            else { clicks = 4; }
+        }
+        else if (clicks == 6)
+        {
+            cameraToggle.GetComponent<Toggle>().isOn = true;
+            cameraToggle.GetComponent<Toggle>().interactable = false;
+            past = false;
+            updateObjects();
+            clearText();
+            lower.text = "You can click and drag on a body to move it wherever you would like, give it a try if you want!";
+        }
+        else if (clicks == 7)
+        {
+            cameraToggle.GetComponent<Toggle>().isOn = true;
+            cameraToggle.GetComponent<Toggle>().interactable = true;
+            updateObjects();
+            clearText();
+            lower.text = "Now click the toggle camera option in order to turn off the automatic camera. This will allow you to zoom in.";
+            cameraToggle.GetComponent<Toggle>().interactable = true;
+            cameraToggle.GetComponent<Toggle>().onValueChanged.AddListener((b) => cameraCheck(b));
+            
+            
+        }
+        else if (clicks == 8)
+        {
+            updateObjects();
+            if (!cameraOn)
+            {
+                //cameraToggle.GetComponent<Toggle>().interactable = false;
+                constantDisable = false;
+                clearText();
+                lower.text = "Try zooming in on the sun using the scroll wheel or touchpad until you can easily see the black arrow.";
+                Disable();
+            }
+            else { clicks = 6; }
+        }
+        else if (clicks == 9)
+        {
+            updateObjects();
+            clearText();
+            lower.text = "This arrow shows both the direction and magnitude of the movement of the body.";
+        }
+        else if (clicks == 10)
+        {
+            updateObjects();
+            past = true;
+            clearText();
+            lower.text = "Try clicking and dragging the arrow in a different direction, then zoom out, toggle the camera, and increase the simulation speed slowly.";
+            cameraToggle.GetComponent<Toggle>().interactable = true;
+            timeSlider.GetComponent<Slider>().interactable = true;
+        }
+
+        else if (clicks == 11)
+        {
+            updateObjects();
+            clearText();
+            main.text = "You should see the sun move in whatever direction you dragged the arrow to be pointing in! If not feel free to press 'Last' to go back";
+        }
+        else if (clicks == 12)
+        {
+            updateObjects();
+            clearText();
+            upper.text = "To the left is a panel of information invloving the bodies. Here you can change their position, directional veloctiy, and mass to exact values!";
+        }
+        else if (clicks == 13)
+        {
+            updateObjects();
+            clearText();
+            upper.text = "You can also destroy the planet by using the trashcan button, or change the trail length.";
+        }
+        else if (clicks == 14)
+        {
+            updateObjects();
+            clearText();
+            erase();
+            main.text = "Those are some of the basics that can help you fully utilize this simulator! Feel free to stay in here and do whatever you'd like, or head back out to the main menu!";
+            
+        }
+        else if (clicks == 15)
+        {
+            updateObjects();
+            clearText();
+            Enable();
+        }
+
+
+        //click
+        // have them toggle camera
+        // check and say to zoom in and manipulate arrow
+        // check arrow manipulation and say woo
 
     }
 
@@ -98,36 +261,79 @@ public class TutorialText : MonoBehaviour
 
     public void Disable()
     {
-
+        cameraToggle.GetComponent<Toggle>().interactable = false;
+        timeSlider.GetComponent<Slider>().interactable = false;
         hideButton.GetComponent<Button>().interactable = false;
-        menuButton.GetComponent<Button>().interactable = false;
-        foreach (Transform child in bodyContainer.transform)
+        if (!constantDisable)
         {
-            if (child.gameObject.GetComponent<DragAndDropCell>().getInteractable() != false)
+            foreach (Transform child in bodyContainer.transform)
             {
-                child.gameObject.GetComponent<DragAndDropCell>().setInteractable(false);
+                if (child.gameObject.GetComponent<DragAndDropCell>().getInteractable() != false)
+                {
+                    child.gameObject.GetComponent<DragAndDropCell>().setInteractable(false);
+                    child.Find("Planet").gameObject.SetActive(false);
+                }
             }
         }
         foreach (Transform child in bodyValues.transform)
         {
-            child.gameObject.GetComponent<UIControllerSetup>().Disable();
+            foreach (Transform panel in child.gameObject.transform) 
+            { 
+                foreach (Transform components in panel.gameObject.transform)
+                {
+                    if (components.gameObject.GetComponent<Button>() != null)
+                    {
+                        components.gameObject.GetComponent<Button>().interactable = false;
+                    }
+                    if (components.gameObject.GetComponent<InputField>() != null)
+                    {
+                        components.gameObject.GetComponent<InputField>().interactable = false;
+                    }
+                    if (components.gameObject.GetComponent<Slider>() != null)
+                    {
+                        components.gameObject.GetComponent<Slider>().interactable = false;
+                    }
+                }
+            }
         }
     }
 
     public void Enable()
     {
+        cameraToggle.GetComponent<Toggle>().interactable = true;
+        timeSlider.GetComponent<Slider>().interactable = true;
         hideButton.GetComponent<Button>().interactable = true;
-        menuButton.GetComponent<Button>().interactable = true;
-        foreach (Transform child in bodyContainer.transform)
+        if (!constantDisable)
         {
-            if (child.gameObject.GetComponent<DragAndDropCell>().getInteractable() != false)
+            foreach (Transform child in bodyContainer.transform)
             {
-                child.gameObject.GetComponent<DragAndDropCell>().setInteractable(true);
+                if (child.gameObject.GetComponent<DragAndDropCell>().getInteractable() != true)
+                {
+                    child.gameObject.GetComponent<DragAndDropCell>().setInteractable(true);
+                    child.Find("Planet").gameObject.SetActive(true);
+                }
             }
         }
         foreach (Transform child in bodyValues.transform)
         {
-            child.gameObject.GetComponent<UIControllerSetup>().Enable();
+            foreach (Transform panel in child.gameObject.transform)
+            {
+                foreach (Transform components in panel.gameObject.transform)
+                {
+                    if (components.gameObject.GetComponent<Button>() != null)
+                    {
+                        components.gameObject.GetComponent<Button>().interactable = true;
+                    }
+                    if (components.gameObject.GetComponent<InputField>() != null)
+                    {
+                        components.gameObject.GetComponent<InputField>().interactable = true;
+                    }
+                    if (components.gameObject.GetComponent<Slider>() != null)
+                    {
+                        components.gameObject.GetComponent<Slider>().interactable = true;
+                    }
+                }
+            }
         }
     }
 
@@ -138,6 +344,7 @@ public class TutorialText : MonoBehaviour
             if (child.gameObject.tag.Equals("Sun"))
             {
                 child.gameObject.GetComponent<DragAndDropCell>().setInteractable(value);
+                child.Find("Planet").gameObject.SetActive(value);
             }
         }
     }
@@ -145,6 +352,10 @@ public class TutorialText : MonoBehaviour
     public void Next() //Put cap so click++ does not go too far
     {
         clicks++;
+        if (clicks > 15)
+        {
+            clicks = 15;
+        }
         click();
     }
 
@@ -157,6 +368,14 @@ public class TutorialText : MonoBehaviour
         { 
             GameManager.Instance.menuHide();
             showClicked = false;
+        }
+        if (clicks == 2) { toggleSun(false); erase(); }
+        if (clicks == 3) { erase(); }
+        if (clicks == 14) { erase(); Disable(); }
+        if (clicks == 13)
+        {
+            clicks = 3;
+            Disable();
         }
         click();
     }
@@ -172,6 +391,46 @@ public class TutorialText : MonoBehaviour
 
     }
 
+    public void timeCompare(float f)
+    {
+        if (f < 0.5)
+        {
+            timeStopped = true;
+        }
+        else
+        {
+            timeStopped = false;
+        }
+    }
 
+    public void cameraCheck(bool b)
+    {
+        cameraOn = b;
+    }
 
+    public void updateObjects()
+    {
+        objects.Clear();
+        object[] obj = GameObject.FindSceneObjectsOfType(typeof(GameObject));
+        foreach (object o in obj)
+        {
+            GameObject g = (GameObject)o;
+            objects.Add(g);
+            
+        }
+    }
+
+    public void erase()
+    {
+        updateObjects();
+        foreach (GameObject thing in objects)
+        {
+            if (bodies.Contains(thing.tag))
+            {
+                GameManager.Instance.deleteOnClick(thing);
+                
+            }
+        }
+        updateObjects();
+    }
 }
