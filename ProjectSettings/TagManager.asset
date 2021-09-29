@@ -17,6 +17,7 @@ TagManager:
   - Saturn
   - Neptune
   - Uranus
+  - Center
   layers:
   - Default
   - TransparentFX

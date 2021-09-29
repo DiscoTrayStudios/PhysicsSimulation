@@ -588,4 +588,15 @@ public class GameManager : MonoBehaviour
     {
         mixer.SetFloat("backgroundVolume", (Mathf.Log10(sliderValue) * 20));
     }
+
+    // Returns number of objects in space
+    public int getObjectCount()
+    {
+        return ObjectCounter;
+    }
+
+    public float getTimeValue()
+    {
+        return timeSlider.GetComponent<Slider>().value;
+    }
 }

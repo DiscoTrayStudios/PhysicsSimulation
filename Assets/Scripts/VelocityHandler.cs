@@ -9,11 +9,13 @@ public class VelocityHandler : MonoBehaviour
     public Rigidbody2D body;
     float stretchFactor = 10f;
     GameManager gameManager;
+    bool sameV;
 
     // Start is called before the first frame update
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        sameV = false;
     }
 
     void SetVector(Vector3 delta)
@@ -41,14 +43,22 @@ public class VelocityHandler : MonoBehaviour
 
     private void OnMouseDrag()
     {
+        sameV = false;
         Vector3 delta = Camera.main.ScreenToWorldPoint(Input.mousePosition) - body.transform.position;
         Vector3 v = delta * stretchFactor;
+        if (body.velocity.Equals(v)) { sameV = true; }
         body.velocity = v;
+        
         SetVector(v);
     }
 
     private void OnMouseUp()
     {
         if (shouldRestart) gameManager.startTime();
+    }
+
+    public bool same()
+    {
+        return sameV;
     }
 }
