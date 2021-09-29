@@ -26,6 +26,12 @@ public class UIControllerSetup : MonoBehaviour
         velocityXInputField.GetComponent<InputField>().onEndEdit.AddListener(f => g.changeVelocityX(float.Parse(f)/100));
         velocityYInputField.GetComponent<InputField>().onEndEdit.AddListener(f => g.changeVelocityY(float.Parse(f)/100));
 
+        massText.GetComponent<Text>().text = "Mass: ";
+        posXText.GetComponent<Text>().text = "X: ";
+        posYText.GetComponent<Text>().text = "Y: ";
+        velocityXText.GetComponent<Text>().text = "Vx: ";
+        velocityYText.GetComponent<Text>().text = "Vy: ";
+
         trailLabel.GetComponent<Text>().text = "Length of Trail";
         Slider tSlider = trailSlider.GetComponent<Slider>();
         tSlider.value = 5;
