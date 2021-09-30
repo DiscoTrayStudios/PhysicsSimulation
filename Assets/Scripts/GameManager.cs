@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         // Every 5 frames the text updates and the camera repositions
-        if (frames % 5 == 0)
+        if (frames / 30 == 0)
         {
             foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
             {
@@ -110,19 +110,22 @@ public class GameManager : MonoBehaviour
                 GameObject pc = keyValue.Value;
 
                 UIControllerSetup ui = pc.GetComponent<UIControllerSetup>();
-                ui.massText.GetComponent<Text>().text = "Mass: " + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
-                ui.posXText.GetComponent<Text>().text = "X: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
-                ui.posYText.GetComponent<Text>().text = "Y: " + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
-                ui.velocityXText.GetComponent<Text>().text = "Vx: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
-                ui.velocityYText.GetComponent<Text>().text = "Vy: " + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+
+                if (Time.timeScale != 0)
+                {
+                    ui.massInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
+                    ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
+                    ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
+                    ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
+                    ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+                }
+            }
+            if (physObjects.Count > 0)
+            {
+                CameraReposition();
             }
         }
-        if (physObjects.Count > 0)
-        {
-            CameraReposition();
-        }
     }
-
     void LoadScene()
     {
         physObjects = new List<Gravity>();
@@ -208,7 +211,7 @@ public class GameManager : MonoBehaviour
         }
         // Increase frames by one; every 30 frames update these functions and set frames to 0
         frames++;
-        if (frames >= 30)
+        if (30 % frames == 0)
         {
             CullFaroffObjects();
             centerOfSystem = CenterOfSystem();
