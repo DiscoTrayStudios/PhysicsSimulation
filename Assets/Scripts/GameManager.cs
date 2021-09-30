@@ -111,11 +111,14 @@ public class GameManager : MonoBehaviour
 
                 UIControllerSetup ui = pc.GetComponent<UIControllerSetup>();
 
-                ui.massInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
-                ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
-                ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
-                ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
-                ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+                if (Time.timeScale != 0)
+                {
+                    ui.massInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
+                    ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
+                    ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
+                    ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
+                    ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+                }
             }
             if (physObjects.Count > 0)
             {
