@@ -5,90 +5,18 @@ using UnityEngine;
 public class SpawnScript : MonoBehaviour
 {
 
-
-
-
-    /*
-    private Vector2 sunVelocity = Vector2.zero;
-    private int numberOfPlanets = 5;
-
-
-    ///private float radius = 20f;
-
-    */
     private static float minPlanetMass = .1f;
     private static float maxPlanetMass = 3f;
-    //private static float spawnDelay = 15f;
     private static float maxPlanetSize = 0.2f;
     static float orbitConstant = 15;
     public static Color temp = Color.red;
     public static string planettemp;
-    //public static Color[] allcol = new Color[7];
-
-    /*
-
-    private List<GameObject> planets = new List<GameObject>();
-
-    void Start()
-    {   
-        StartCoroutine(SpawnPlanets());
-
-        sun.GetComponent<Rigidbody2D>().velocity = sunVelocity;
-    }
-
-    private IEnumerator SpawnPlanets()
-    {
-        for (int i = 0; i < numberOfPlanets; i++)
-        {
-            GameObject planet = Instantiate(planetPrefab);
-            float x = 5;
-            float y = 5;
-
-
-            //Add below back when fixed the limits on random spawn location
-            ///float x = -radius / 2f + Random.value * radius;
-            ///float y = -radius / 2f + Random.value * radius;
-            ///
-
-
-            Vector2 position = new Vector2(x, y);
-            planet.transform.position = position;
-            float scale = 1f + Random.value * maxPlanetSize;
-            planet.transform.localScale = new Vector2(scale, scale);
-
-            float m = minPlanetMass + Random.value * (maxPlanetMass - minPlanetMass);
-            Rigidbody2D prb = planet.GetComponent<Rigidbody2D>();
-            prb.mass = m;
-
-            //Static setting of velocity
-            prb.velocity = new Vector2(3, 0);
-
-            planets.Add(planet);
-
-            yield return new WaitForSeconds(spawnDelay);
-        }
-    }
-
-    */
 
     static public Gravity SpawnNewPlanet(Vector2 position, GameObject prefab)
     {
-        // I thought that removing the black option here (0,0,0,1) would stop planets spawning as black, but it didn't work here either. ??
-        // Maybe there should be a drop down box to choose a color of the planet rather than making it automatic. 
-        // This way there will be more customization which would make it easier for the player to keep track of their planets.
-        //allcol[0] = new Color(0, 0, 0, 1); //Black
-        //allcol[3] = new Color(0.5f, 0.5f, 0.5f, 1); //Gray
-        //allcol[0] = new Color(0, 0, 1, 1); //Blue
-        //allcol[1] = new Color(0, 1, 1, 1); //Cyan
-        //allcol[2] = new Color(0, 1, 0, 1); //Green
-        //allcol[3] = new Color(1, 0, 1, 1); //Magenta
-        //allcol[4] = new Color(1, 0, 0, 1); //Red
-        //allcol[5] = new Color(1, 0.92f, 0.016f, 1); //Yellow
-        //allcol[6] = new Color(1, 1, 1, 1); //White
         GameObject planet = Instantiate(prefab);
         planettemp = prefab.tag;
         Gravity g = planet.GetComponentInChildren<Gravity>();
-        //RigidBody2D rbody = planet.GetComponentInChildren<Rigidbody2D>();
         planet.transform.position = position;
         g.transform.position = position;
         g.GetComponent<Rigidbody2D>().position = position;
@@ -108,8 +36,7 @@ public class SpawnScript : MonoBehaviour
         g.startVelocity =
            Quaternion.Euler(0, 0, 90) * toCenter.normalized *
            orbitConstant / Mathf.Sqrt(distToCenter);
-        // Here is how I tried to remove black as well.
-        temp = new Color(1, 1, 1, 1);//allcol[(int)Mathf.Round(Random.Range(0, 7))];
+        temp = new Color(1, 1, 1, 1);
         planet.GetComponentInChildren<SpriteRenderer>().color = temp;
 
         return g;
@@ -117,7 +44,6 @@ public class SpawnScript : MonoBehaviour
 
     static public Color getColor()
     {
-        //return new Color(1, 1, 1, 1);
         return temp;
     }
 

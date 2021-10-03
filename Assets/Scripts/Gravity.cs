@@ -112,6 +112,11 @@ public class Gravity : MonoBehaviour
         trail.time = l;
     }
 
+    public void changeColor(Color i)
+    {
+        rbody.GetComponentInParent<SpriteRenderer>().color = i;
+    }
+
     void SetSize()
     {
         screenSize = 1+Mathf.Log(rbody.mass)/6;

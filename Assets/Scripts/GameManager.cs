@@ -126,83 +126,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    void LoadScene()
-    {
-        physObjects = new List<Gravity>();
-        camera = FindObjectOfType<Camera>();
-
-        foreach (Gravity g in FindObjectsOfType<Gravity>())
-        {
-            physObjects.Add(g);
-            NewPlanetController(g, "Normal " + g.getTag());
-            ++ObjectCounter;
-            Debug.Log("Objects: " + ObjectCounter);
-        }
-
-        SetUpCoM();
-    }
-
-    // I tried to remove the black option, but changing it here didn't seem to do it? 
-    public string colorToString(Color color)
-    {
-        Vector4 temp = color;
-        if (temp == new Vector4(1, 0, 0, 1))
-        {
-            return "Red";
-        }
-        //else if (temp == new Vector4(0, 0, 0, 1))
-        //{
-            // removed the black option because it is hard to see against the blackness of space. (didn't work)
-            //return "Black";
-        //    return "Normal";
-        //}
-        else if (temp == new Vector4(0, 0, 1, 1))
-        {
-            return "Blue";
-        }
-        //else if (temp == new Vector4(0.5f, 0.5f, 0.5f, 1))
-        //{
-        //    return "Gray";
-        //}
-        else if (temp == new Vector4(0, 1, 0, 1))
-        {
-            return "Green";
-        }
-        else if (temp == new Vector4(1, 0, 1, 1))
-        {
-            return "Magenta";
-        }
-        else if (temp == new Vector4(0, 1, 1, 1))
-        {
-            return "Cyan";
-        }
-        else if (temp == new Vector4(1, 1, 1, 1))
-        {
-            // This is where it gets the color string on the left menu. White looks the same as normal.
-            // For now everything will be white or normal. This may be changed in the future. 
-            // Maybe color can be a thing that the player changes instead of it being random? It's an idea.
-            //return "White" 
-            return "Normal";
-        }
-        else if (temp == new Vector4(1, 0.92f, 0.016f, 1))
-        {
-            return "Yellow";
-        }
-        else
-            return "Normal";
-
-    }
-
-    void SetUpCoM() {
-        centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
-        SpriteRenderer sr = centerOfMassIndicator.gameObject.GetComponent<SpriteRenderer>();
-        //CoM is slightly translucent
-        sr.color = new Color(1, 1, 1, .5f);
-        //and it is drawn in front of other objects
-        sr.sortingOrder = 5;        
-    }
-
-
     void FixedUpdate()
     {
         if (!camera)
@@ -218,15 +141,30 @@ public class GameManager : MonoBehaviour
             centerOfMassIndicator.transform.position = centerOfSystem;
             frames = 0;
         }
+    }
+    void LoadScene()
+    {
+        physObjects = new List<Gravity>();
+        camera = FindObjectOfType<Camera>();
 
-        // Made it slower
-    //    positions = new Vector2[ObjectCounter];
-    //    int i = 0;
-    //    foreach (Gravity go in physObjects)
-    //    {
-    //        positions[i] = go.GetComponent<Rigidbody2D>().position;
-    //        i++;
-    //    }
+        foreach (Gravity g in FindObjectsOfType<Gravity>())
+        {
+            physObjects.Add(g);
+            NewPlanetController(g, g.getTag());
+            ++ObjectCounter;
+            Debug.Log("Objects: " + ObjectCounter);
+        }
+
+        SetUpCoM();
+    }
+    
+    void SetUpCoM() {
+        centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
+        SpriteRenderer sr = centerOfMassIndicator.gameObject.GetComponent<SpriteRenderer>();
+        //CoM is slightly translucent
+        sr.color = new Color(1, 1, 1, .5f);
+        //and it is drawn in front of other objects
+        sr.sortingOrder = 5;        
     }
 
     //Get rid of anything too far from the center of the system
@@ -265,15 +203,7 @@ public class GameManager : MonoBehaviour
             physObjects.Add(g);
             ++ObjectCounter;
             Debug.Log("Objects: " + ObjectCounter);
-            NewPlanetController(g, colorToString(colortemp) + "  " + planettemp);
-            // Made it slower
-            //masses = new float[ObjectCounter];
-            //int i = 0;
-            //foreach (Gravity go in physObjects)
-            //{
-            //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
-            //    i++;
-            //}
+            NewPlanetController(g, planettemp);
     }
     }
 
@@ -284,14 +214,6 @@ public class GameManager : MonoBehaviour
         planetControllers.Remove(g);
         --ObjectCounter;
         Debug.Log("Objects: " + ObjectCounter);
-        // Made it slower
-        //masses = new float[ObjectCounter];
-        //int i = 0;
-        //foreach (Gravity go in physObjects)
-        //{
-        //    masses[i] = go.GetComponent<Rigidbody2D>().mass;
-        //    i++;
-        //}
     }
 
     // Called once every 30 frames (frame cap is at 30 fps)
@@ -309,6 +231,19 @@ public class GameManager : MonoBehaviour
         if (physObjects.Count > 0) v /= totalMass;
         return v;
     }
+
+    // GOAL LIST
+
+    // Goal *Distance calculator*
+        // 1st have a selection system (LMB & Ctr + LMB to select one or two planets [limit of 2]
+        // When a planet is selected, it should be highlighted
+        // When two planets are selected, the distance between them should appear on the screen
+
+    // Goal *Customize Planets*
+        // Allow people to choose the color of the planet
+        // (a dropbox selection of colors?
+        // Allow people to change the name of the planet
+        // (Like the number thing, but with names (restriction: can't be blank)
 
     // Called once every 5 frames (frame cap is at 30 fps)
     public void CameraReposition()
@@ -392,16 +327,6 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("deltaV");
             }
         }
-        //Made it slower 
-        //Vector2 ob = obj.GetComponent<Rigidbody2D>().position;
-        //for (int i = 0; i < ObjectCounter; i++)
-		//{
-        //    if (ob != positions[i])
-        //    {
-        //        Vector2 diff = ob - positions[i];
-        //        c += masses[i] * diff.normalized / diff.sqrMagnitude;
-        //    }
-		//}
         return G * c * Time.fixedDeltaTime;
     }
 
