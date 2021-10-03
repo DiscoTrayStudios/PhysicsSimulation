@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     private int selectedLevel;
     public AudioMixer mixer;
     public GameObject backgroundAudio;
+    public float distanceModifier;
 
     public GameObject CenterOfMassPrefab;
     GameObject centerOfMassIndicator;
