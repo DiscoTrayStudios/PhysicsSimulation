@@ -54,7 +54,7 @@ public class Gravity : MonoBehaviour
         { 
             Vector2 v = GameManager.Instance.deltaV(this);
             if (!IsInvalid(v))
-                rbody.velocity += v;
+                rbody.AddForce(v);
         }
     }
 

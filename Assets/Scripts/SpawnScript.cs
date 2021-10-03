@@ -21,10 +21,10 @@ public class SpawnScript : MonoBehaviour
         g.transform.position = position;
         g.GetComponent<Rigidbody2D>().position = position;
 
-        float m = minPlanetMass + (Random.value * (maxPlanetMass - minPlanetMass));
-        if (prefab.CompareTag("Black Hole")) { m = 100 + Random.value * 1000; }
+        //float m = minPlanetMass + (Random.value * (maxPlanetMass - minPlanetMass));
+        //if (prefab.CompareTag("Black Hole")) { m = 100 + Random.value * 1000; }
 
-        g.GetComponent<Rigidbody2D>().mass = m;
+        //g.GetComponent<Rigidbody2D>().mass = m;
 
         float scale = 1f + Random.value * maxPlanetSize;
         planet.transform.localScale = new Vector2(scale, scale);
