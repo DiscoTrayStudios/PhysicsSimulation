@@ -2166,7 +2166,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: Simulation Speed
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: cd5669a5ddf4c6341b57d258910b79c5, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2230,7 +2230,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &467865667
@@ -8124,7 +8124,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: d27bff2033ace7b40882795320ae6c7a, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -8325,6 +8325,7 @@ MonoBehaviour:
   - Tutorial
   mixer: {fileID: 24100000, guid: 6b9bcbbfff7177046a08835fd359b6b4, type: 2}
   backgroundAudio: {fileID: 1700294583}
+  distanceModifier: 20
   CenterOfMassPrefab: {fileID: 6282359617975671423, guid: 0d7f254afa7312f41a4a39f3f66c30d6, type: 3}
   planetPrefab: {fileID: 4733263487374029647, guid: cb9f4059a45b64025b4ef31af45d36cd, type: 3}
   sunPrefab: {fileID: 1318839872153184546, guid: 5ca69cf1a8487a041810228c3804fb85, type: 3}

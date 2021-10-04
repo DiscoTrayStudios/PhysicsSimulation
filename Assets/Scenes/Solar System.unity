@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7324935060228127772, guid: 5ca69cf1a8487a041810228c3804fb85, type: 3}
       propertyPath: m_Mass
-      value: 300
+      value: 198910
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ca69cf1a8487a041810228c3804fb85, type: 3}
@@ -284,7 +284,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: b95905c111c5e45d89dae51cd945d2f5, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 56.83
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: b95905c111c5e45d89dae51cd945d2f5, type: 3}
       propertyPath: m_RootOrder
@@ -345,7 +345,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1326398288173722553, guid: 9d0da1d6e3cff4d60b2199e1e68dd271, type: 3}
       propertyPath: startVelocity.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1326398288173722553, guid: 9d0da1d6e3cff4d60b2199e1e68dd271, type: 3}
       propertyPath: startVelocity.y
@@ -353,7 +353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: 9d0da1d6e3cff4d60b2199e1e68dd271, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 0.03285
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: 9d0da1d6e3cff4d60b2199e1e68dd271, type: 3}
       propertyPath: m_RootOrder
@@ -418,7 +418,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: 7c6fc02a0b63d4493a20a76d79f8f1a5, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 189.8
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: 7c6fc02a0b63d4493a20a76d79f8f1a5, type: 3}
       propertyPath: m_RootOrder
@@ -487,7 +487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: 22e2e8af087cf475f9c6ca58a0533db9, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 0.0639
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: 22e2e8af087cf475f9c6ca58a0533db9, type: 3}
       propertyPath: m_RootOrder
@@ -560,7 +560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: 451bd1ce357df46cebd5d0f5f205d605, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 10.24
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: 451bd1ce357df46cebd5d0f5f205d605, type: 3}
       propertyPath: m_RootOrder
@@ -625,11 +625,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1326398288173722553, guid: a25c5e27589be46b48a2019de3c25cbe, type: 3}
       propertyPath: startVelocity.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: a25c5e27589be46b48a2019de3c25cbe, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 0.4867
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: a25c5e27589be46b48a2019de3c25cbe, type: 3}
       propertyPath: m_RootOrder
@@ -698,7 +698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: cb9f4059a45b64025b4ef31af45d36cd, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 0.5972
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: cb9f4059a45b64025b4ef31af45d36cd, type: 3}
       propertyPath: m_RootOrder
@@ -767,7 +767,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2110195803114803620, guid: 81c141866fc482d49897b2313e2f906b, type: 3}
       propertyPath: m_Mass
-      value: 1
+      value: 8.681
       objectReference: {fileID: 0}
     - target: {fileID: 4733263487374029643, guid: 81c141866fc482d49897b2313e2f906b, type: 3}
       propertyPath: m_RootOrder

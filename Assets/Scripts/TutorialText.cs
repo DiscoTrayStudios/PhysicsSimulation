@@ -383,7 +383,7 @@ public class TutorialText : MonoBehaviour
     private void showPressed()
     {
         showClicked = true;
-        if (clicks != 10) //THIS NEEDS TO BE CHANGED TO MAX CLICK COUNT)
+        if (clicks != 15) //THIS NEEDS TO BE CHANGED TO MAX CLICK COUNT)
         {
             clicks = 2;
         }

@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     // Gravity
-    static float G = -1f;
+    static float G = 0.667408f;
     List<Gravity> physObjects;
     Dictionary<Gravity, GameObject> planetControllers = new Dictionary<Gravity, GameObject>();
     
@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     private int selectedLevel;
     public AudioMixer mixer;
     public GameObject backgroundAudio;
+    public float distanceModifier;
 
     public GameObject CenterOfMassPrefab;
     GameObject centerOfMassIndicator;
@@ -177,6 +178,7 @@ public class GameManager : MonoBehaviour
             if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 40) 
             {
                 DestroyBody(go);
+                break;
                 //toRemove.Add(go);
             }
         }
@@ -319,15 +321,22 @@ public class GameManager : MonoBehaviour
         // Collect each position once and then compare?
         foreach (Gravity go in physObjects)
         {
-            if (go != obj)
+            if (!go.Equals(obj))
             {
-                Vector2 diff = obj.GetComponent<Rigidbody2D>().position - go.GetComponent<Rigidbody2D>().position;
-                //float rsq = diff.sqrMagnitude;
-                c += go.GetComponent<Rigidbody2D>().mass * diff.normalized / diff.sqrMagnitude;
-                //Debug.Log("deltaV");
+                Rigidbody2D GO_RigidBody = go.gameObject.GetComponent<Rigidbody2D>();
+                Rigidbody2D objToAttract = obj.gameObject.GetComponent<Rigidbody2D>();
+                Vector2 direction = go.gameObject.GetComponent<Rigidbody2D>().position - obj.gameObject.GetComponent<Rigidbody2D>().position;
+                float distance = direction.magnitude*distanceModifier;
+
+
+
+                // This is the actual equation for gravitational interaction of two celestial bodies
+                // Fn = G * ((m1*m2)/distance^2)
+                Vector2 force = direction.normalized * ((GO_RigidBody.mass * objToAttract.mass) / (distance * distance)) * G;
+                return force;
             }
         }
-        return G * c * Time.fixedDeltaTime;
+        return c;
     }
 
     public void changeSelectedLevel(int level) 
@@ -354,6 +363,10 @@ public class GameManager : MonoBehaviour
         if (presetLevels[selectedLevel].Equals("Tutorial"))
         {
             tutorialInfo.SetActive(true);
+        }
+        else
+        {
+            tutorialInfo.SetActive(false);
         }
         Destroy(volumeButtontemp);
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
