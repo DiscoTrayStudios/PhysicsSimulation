@@ -11,6 +11,7 @@ public class Gravity : MonoBehaviour
     internal bool beingDragged;
     public GameObject explosion;
     float screenSize;
+    internal bool selected = false;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,52 @@ public class Gravity : MonoBehaviour
     {
         beingDragged = false;
         rbody.velocity = startVelocity;
+        if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this))
+        {
+            GameManager.Instance.s1.ChangeMaterial();
+        }
+        ChangeMaterial();
     }
+
+    public void ChangeMaterial()
+    {
+        if (!selected)
+        {
+            rbody.GetComponentInParent<SpriteRenderer>().material = GameManager.Instance.notSelect;
+            if (!GameManager.Instance.select1)
+            {
+                GameManager.Instance.s1 = this;
+                GameManager.Instance.select1 = true;
+            }
+            else if (!GameManager.Instance.select2)
+			{
+                GameManager.Instance.s2 = this;
+                GameManager.Instance.select2 = true;
+            }
+            else
+			{
+                GameManager.Instance.s1 = this;
+                GameManager.Instance.select1 = true;
+            }
+            selected = true;
+        }
+        else
+        {
+            rbody.GetComponentInParent<SpriteRenderer>().material = GameManager.Instance.select;
+            if (GameManager.Instance.s2.Equals(this))
+            {
+                GameManager.Instance.s2 = null;
+                GameManager.Instance.select2 = false;
+
+            }
+            else
+            {
+                GameManager.Instance.s1 = null;
+                GameManager.Instance.select1 = false;
+            }
+            selected = false;
+        }
+	}
 
     public string getTag()
     {
