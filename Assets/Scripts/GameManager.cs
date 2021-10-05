@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
     // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
     public Vector2 centerOfSystem;
 
+
     private int frames = 0;
 
     private void Awake()
@@ -137,6 +138,11 @@ public class GameManager : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (!tutorialInfo.activeSelf)
+        {
+            Enable();
+        }
+        
         frames++;
         if (!camera)
         {
@@ -368,6 +374,7 @@ public class GameManager : MonoBehaviour
 
     public void startOnClick()
     {
+        volumeSlider.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -377,20 +384,14 @@ public class GameManager : MonoBehaviour
         showButton.SetActive(true);
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
-        if (presetLevels[selectedLevel].Equals("Tutorial"))
-        {
-            tutorialInfo.SetActive(true);
-        }
-        else
-        {
-            tutorialInfo.SetActive(false);
-        }
+        tutorialInfo.SetActive(false);
         Destroy(volumeButtontemp);
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
     }
 
     public void menuOnClick()
     {
+        volumeSlider.SetActive(false);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
@@ -412,6 +413,7 @@ public class GameManager : MonoBehaviour
 
     public void creditsOnClick()
     {
+        volumeSlider.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -422,20 +424,26 @@ public class GameManager : MonoBehaviour
         creditsBackground.SetActive(true);
     }
 
-    public void howToOnClick()
+    public void tutorial()
     {
+        volumeSlider.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
         creditsButton.SetActive(false);
+        background.SetActive(false);
         dropdown.SetActive(false);
-        backButton.SetActive(true);
-        howToText.SetActive(true);
-        howToBackground.SetActive(true);
+        showButton.SetActive(true);
+        scrollView.SetActive(true);
+        cellContainer.SetActive(true);
+        Destroy(volumeButtontemp);
+        tutorialInfo.SetActive(true);
+        StartCoroutine(LoadYourAsyncScene("Tutorial"));
     }
 
     public void backOnClick()
     {
+        volumeSlider.SetActive(false);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
@@ -513,9 +521,11 @@ public class GameManager : MonoBehaviour
 
     public void menuShow()
     {
+        tutorialInfo.GetComponent<TutorialText>().constantDisabledToggle(false);
         pauseMenu.SetActive(true);
         distanceText.SetActive(true);
         showButton.SetActive(false);
+        resetValues();
 
     }
 
@@ -558,5 +568,32 @@ public class GameManager : MonoBehaviour
     public float getTimeValue()
     {
         return timeSlider.GetComponent<Slider>().value;
+    }
+
+
+
+    public void resetValues()
+    {
+        timeSlider.GetComponent<Slider>().value = 1;
+        autoCameraToggle.GetComponent<Toggle>().isOn = true;
+        Enable();
+    }
+
+
+    public void Enable()
+    {
+        autoCameraToggle.GetComponent<Toggle>().interactable = true;
+        timeSlider.GetComponent<Slider>().interactable = true;
+        hideButton.GetComponent<Button>().interactable = true;
+        foreach (Transform child in cellContainer.transform)
+            {
+                if (child.gameObject.GetComponent<DragAndDropCell>().getInteractable() != true)
+                {
+                    child.gameObject.GetComponent<DragAndDropCell>().setInteractable(true);
+                    child.Find("Planet").gameObject.SetActive(true);
+                }
+            }
+        
+        
     }
 }

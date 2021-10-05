@@ -2141,7 +2141,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 610, y: -206}
+  m_AnchoredPosition: {x: 610, y: -194.19}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &467865666
@@ -2167,7 +2167,7 @@ MonoBehaviour:
   m_text: Simulation Speed
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cd5669a5ddf4c6341b57d258910b79c5, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: -8798024472467922721, guid: cd5669a5ddf4c6341b57d258910b79c5, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2893,7 +2893,7 @@ GameObject:
   - component: {fileID: 699722859}
   - component: {fileID: 699722858}
   m_Layer: 5
-  m_Name: howToButton
+  m_Name: TutorialButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2965,7 +2965,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1914390921}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: howToOnClick
+        m_MethodName: tutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4901,7 +4901,7 @@ GameObject:
   - component: {fileID: 1176506005}
   - component: {fileID: 1176506004}
   m_Layer: 5
-  m_Name: howToButtonText
+  m_Name: TutorialButtonText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4959,7 +4959,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: How To Play
+  m_Text: Tutorial
 --- !u!222 &1176506005
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5456,8 +5456,6 @@ MonoBehaviour:
     - m_Text: Binary System
       m_Image: {fileID: 0}
     - m_Text: Solar System
-      m_Image: {fileID: 0}
-    - m_Text: Tutorial
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8235,7 +8233,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9, y: -0.5}
+  m_AnchoredPosition: {x: 6, y: 1.5}
   m_SizeDelta: {x: -28, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1798494153
