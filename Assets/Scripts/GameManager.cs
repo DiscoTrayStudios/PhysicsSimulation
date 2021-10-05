@@ -1,4 +1,4 @@
- using System.Collections;
+﻿ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     
 
     public GameObject startButton, creditsButton, howToButton, volumeButton, volumeButtontemp, backButton, timeSlider, menuButton, showButton, hideButton, pauseMenu, autoCameraToggle;
-    public GameObject titleText, creditsText, howToText;
+    public GameObject titleText, creditsText, howToText, distanceText;
     public GameObject volumeSlider;
     public GameObject canvas;
     public GameObject events;
@@ -64,6 +64,13 @@ public class GameManager : MonoBehaviour
     private bool AutoCamera = true;
     private Vector3 startCameraPos;
     private bool draggingNothing;
+
+    public bool select1 = false;
+    public bool select2 = false;
+    public Gravity s1;
+    public Gravity s2;
+    public Material notSelect;
+    public Material select;
 
     public GameObject tutorialInfo;
 
@@ -102,7 +109,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        // Every 5 frames the text updates and the camera repositions
+        // Every 30 frames the text updates and the camera repositions
         if (frames / 30 == 0)
         {
             foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
@@ -119,6 +126,7 @@ public class GameManager : MonoBehaviour
                     ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
                     ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
                     ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+                    distanceText.GetComponent<TextMeshProUGUI>().text = "Distance: " + distance();
                 }
             }
             if (physObjects.Count > 0)
@@ -129,13 +137,13 @@ public class GameManager : MonoBehaviour
     }
     void FixedUpdate()
     {
+        frames++;
         if (!camera)
         {
             LoadScene();
         }
         // Increase frames by one; every 30 frames update these functions and set frames to 0
-        frames++;
-        if (30 % frames == 0)
+        if (frames / 30 == 0)
         {
             CullFaroffObjects();
             centerOfSystem = CenterOfSystem();
@@ -210,6 +218,16 @@ public class GameManager : MonoBehaviour
     }
 
     public void DestroyBody(Gravity g) {
+        if(g.Equals(s1))
+		{
+            s1 = null;
+            select1 = false;
+		}
+        if (g.Equals(s2))
+        {
+            s2 = null;
+            select2 = false;
+        }
         physObjects.Remove(g);
         Destroy(g.gameObject.transform.parent.gameObject);
         Destroy(planetControllers[g]);
@@ -233,19 +251,6 @@ public class GameManager : MonoBehaviour
         if (physObjects.Count > 0) v /= totalMass;
         return v;
     }
-
-    // GOAL LIST
-
-    // Goal *Distance calculator*
-        // 1st have a selection system (LMB & Ctr + LMB to select one or two planets [limit of 2]
-        // When a planet is selected, it should be highlighted
-        // When two planets are selected, the distance between them should appear on the screen
-
-    // Goal *Customize Planets*
-        // Allow people to choose the color of the planet
-        // (a dropbox selection of colors?
-        // Allow people to change the name of the planet
-        // (Like the number thing, but with names (restriction: can't be blank)
 
     // Called once every 5 frames (frame cap is at 30 fps)
     public void CameraReposition()
@@ -338,6 +343,18 @@ public class GameManager : MonoBehaviour
         }
         return c;
     }
+
+    public int distance()
+	{
+        if(!(s1 is null) && !(s2 is null))
+		{            
+            // Distance is (x2 − x1)^2 + (y2 − y1)^2
+            float xDiff = s2.rbody.position.x - s1.rbody.position.x;
+            float yDiff = s2.rbody.position.y - s1.rbody.position.y;
+            return (int)(Mathf.Pow(xDiff, 2) + Mathf.Pow(yDiff, 2));
+        }
+        return 0;
+	}
 
     public void changeSelectedLevel(int level) 
     {
@@ -489,6 +506,7 @@ public class GameManager : MonoBehaviour
     public void menuHide()
     {
             pauseMenu.SetActive(false);
+            distanceText.SetActive(false);
             showButton.SetActive(true);
         
     }
@@ -496,6 +514,7 @@ public class GameManager : MonoBehaviour
     public void menuShow()
     {
         pauseMenu.SetActive(true);
+        distanceText.SetActive(true);
         showButton.SetActive(false);
 
     }
