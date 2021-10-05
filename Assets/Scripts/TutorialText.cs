@@ -41,32 +41,7 @@ public class TutorialText : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        clicks = 0;
-        show.GetComponent<Button>().interactable = false;
-        showClicked = false;
-        timeStopped = false;
-        cameraOn = true;
-        clearText();
-        objects = new List<GameObject>();
-        constantDisable = false;
-        past = false;
-        bodies = new List<string>();
-        bodies.Add("Sun");
-        bodies.Add("Earth");
-        bodies.Add("Venus");
-        bodies.Add("Neptune");
-        bodies.Add("Saturn");
-        bodies.Add("Mars");
-        bodies.Add("Jupiter");
-        bodies.Add("Uranus");
-        bodies.Add("Mercury");
-        bodies.Add("Black Hole");
-        click();
-
-        
-        
-
-
+        init();
     }
 
     // Update is called once per frame
@@ -83,8 +58,34 @@ public class TutorialText : MonoBehaviour
         
     }
 
+    public void init()
+    {
+        clicks = 0;
+        show.GetComponent<Button>().interactable = false;
+        showClicked = false;
+        timeStopped = false;
+        cameraOn = true;
+        clearText();
+        objects = new List<GameObject>();
+        constantDisable = false;
+        toggleSun(true);
+        past = false;
+        bodies = new List<string>();
+        bodies.Add("Sun");
+        bodies.Add("Earth");
+        bodies.Add("Venus");
+        bodies.Add("Neptune");
+        bodies.Add("Saturn");
+        bodies.Add("Mars");
+        bodies.Add("Jupiter");
+        bodies.Add("Uranus");
+        bodies.Add("Mercury");
+        bodies.Add("Black Hole");
+        click();
+    }
 
-    private void click()
+
+    public void click()
     {
         if (clicks == 0)
         {
@@ -165,7 +166,6 @@ public class TutorialText : MonoBehaviour
         {
             cameraToggle.GetComponent<Toggle>().isOn = true;
             cameraToggle.GetComponent<Toggle>().interactable = false;
-            past = false;
             updateObjects();
             clearText();
             lower.text = "You can click and drag on a body to move it wherever you would like, give it a try if you want!";
@@ -177,7 +177,6 @@ public class TutorialText : MonoBehaviour
             updateObjects();
             clearText();
             lower.text = "Now click the toggle camera option in order to turn off the automatic camera. This will allow you to zoom in.";
-            cameraToggle.GetComponent<Toggle>().interactable = true;
             cameraToggle.GetComponent<Toggle>().onValueChanged.AddListener((b) => cameraCheck(b));
             
             
@@ -187,13 +186,14 @@ public class TutorialText : MonoBehaviour
             updateObjects();
             if (!cameraOn)
             {
+                cameraToggle.GetComponent<Toggle>().interactable = false;
                 //cameraToggle.GetComponent<Toggle>().interactable = false;
                 constantDisable = false;
                 clearText();
                 lower.text = "Try zooming in on the sun using the scroll wheel or touchpad until you can easily see the black arrow.";
                 Disable();
             }
-            else { clicks = 6; }
+            else { clicks = 7; }
         }
         else if (clicks == 9)
         {
@@ -204,7 +204,6 @@ public class TutorialText : MonoBehaviour
         else if (clicks == 10)
         {
             updateObjects();
-            past = true;
             clearText();
             lower.text = "Try clicking and dragging the arrow in a different direction, then zoom out, toggle the camera, and increase the simulation speed slowly.";
             cameraToggle.GetComponent<Toggle>().interactable = true;
@@ -393,7 +392,7 @@ public class TutorialText : MonoBehaviour
 
     public void timeCompare(float f)
     {
-        if (f < 0.5)
+        if (f == 0)
         {
             timeStopped = true;
         }
@@ -406,6 +405,7 @@ public class TutorialText : MonoBehaviour
     public void cameraCheck(bool b)
     {
         cameraOn = b;
+        cameraToggle.GetComponent<Toggle>().interactable = false ;
     }
 
     public void updateObjects()
@@ -432,5 +432,15 @@ public class TutorialText : MonoBehaviour
             }
         }
         updateObjects();
+    }
+
+    public void setClicks(int i)
+    {
+        clicks = i;
+    }
+
+    public void constantDisabledToggle(bool val)
+    {
+        constantDisable = val;
     }
 }
