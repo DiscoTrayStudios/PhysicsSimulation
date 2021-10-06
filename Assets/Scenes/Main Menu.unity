@@ -615,7 +615,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!224 &93542146
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4643,8 +4643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 650, y: 400}
+  m_AnchoredPosition: {x: 0, y: -5.9184}
+  m_SizeDelta: {x: 650, y: 411.8367}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1166137422
 GameObject:
@@ -5556,8 +5556,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Programmers - \nJake Nordin, Cade Phillips, Eric Pinter, Thomas Sebring,
-    Caleb Williams\n\nSources -\nMain Menu Background\nhttps://www.nasa.gov/mission_pages/hubble/multimedia/index.html\n\nVolume
+  m_text: "Programmers - \nIan Campbell, Jonathon Qualls, Jake Nordin, Cade Phillips,
+    Eric Pinter, Thomas Sebring, Caleb Williams\n\nSources -\nMain Menu Background\nhttps://www.nasa.gov/mission_pages/hubble/multimedia/index.html\n\nVolume
     Button\nhttps://www.shutterstock.com/image-vector/volume-icon-209142427\r\n\nAmbient
     Music\nhttps://opengameart.org/content/space-ambient\r\n\nDrag and Drop Code\nhttps://assetstore.unity.com/packages/tools/gui/simple-drag-and-drop-66449\r\n\nExplosion
     Sound\nhttps://opengameart.org/content/atari-booms\r\n\nExplosion Animation\nhttps://opengameart.org/content/explosion-3"
