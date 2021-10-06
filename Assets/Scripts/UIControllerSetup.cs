@@ -36,7 +36,7 @@ public class UIControllerSetup : MonoBehaviour
 
     public void trash()
     {
-        GameManager.Instance.deleteOnClick(trashCan.gameObject.transform.parent.gameObject);
+        GameManager.Instance.deleteOnClick(trashCan.gameObject.transform.parent.gameObject.transform.parent.gameObject);
     }
 
     public void Disable()
