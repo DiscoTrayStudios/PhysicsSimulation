@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         // Frame Rate Limiter (30 fps)
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 30;
+        AutoCamera = false;
 
         if (Instance == null)
         {
@@ -469,22 +470,26 @@ public class GameManager : MonoBehaviour
         setTimeScale(1 - Time.timeScale);
     }
 
-    public void deleteOnClick(GameObject container = null)
+    public void deleteOnClick(GameObject container)
     {
         int check1 = planetControllers.Count;
         Debug.Log("planetControllers.Count(Before):" + check1);
+        Debug.Log(container.ToString());
         foreach (KeyValuePair<Gravity, GameObject> item in planetControllers)
         {
-            if (container = item.Value)
+            Debug.Log(item.Value.ToString());
+            if (container == item.Value)
             {
-                planetControllers.Remove(item.Key);
-                physObjects.Remove(item.Key);
-                item.Key.delete();
-                Destroy(item.Key);
-                Destroy(item.Value);
-                --ObjectCounter;
-                Debug.Log("Objects: " + ObjectCounter);
+                DestroyBody(item.Key);
                 break;
+                //planetControllers.Remove(item.Key);
+                //physObjects.Remove(item.Key);
+                //item.Key.delete();
+                //Destroy(item.Key);
+                //Destroy(item.Value);
+                //--ObjectCounter;
+                //Debug.Log("Objects: " + ObjectCounter);
+                //break;
             }
         }
         int check2 = planetControllers.Count;
@@ -581,7 +586,7 @@ public class GameManager : MonoBehaviour
     {
         ObjectCounter = 0;
         timeSlider.GetComponent<Slider>().value = 1;
-        autoCameraToggle.GetComponent<Toggle>().isOn = true;
+        autoCameraToggle.GetComponent<Toggle>().isOn = false;
         Enable();
     }
 
@@ -599,8 +604,6 @@ public class GameManager : MonoBehaviour
                     child.Find("Planet").gameObject.SetActive(true);
                 }
             }
-        
-        
     }
 
     public bool getSOneSTwo()
