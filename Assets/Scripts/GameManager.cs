@@ -85,7 +85,6 @@ public class GameManager : MonoBehaviour
         // Frame Rate Limiter (30 fps)
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 30;
-        AutoCamera = false;
 
         if (Instance == null)
         {
@@ -177,8 +176,8 @@ public class GameManager : MonoBehaviour
 
         SetUpCoM();
         
-    }
 
+    }
 
     void SetUpCoM() {
         centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
@@ -421,7 +420,6 @@ public class GameManager : MonoBehaviour
     public void creditsOnClick()
     {
         volumeSlider.SetActive(false);
-        volumeButtontemp.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -452,7 +450,6 @@ public class GameManager : MonoBehaviour
     public void backOnClick()
     {
         volumeSlider.SetActive(false);
-        volumeButtontemp.SetActive(true);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
@@ -584,7 +581,7 @@ public class GameManager : MonoBehaviour
     {
         ObjectCounter = 0;
         timeSlider.GetComponent<Slider>().value = 1;
-        autoCameraToggle.GetComponent<Toggle>().isOn = false;
+        autoCameraToggle.GetComponent<Toggle>().isOn = true;
         Enable();
     }
 
@@ -604,5 +601,10 @@ public class GameManager : MonoBehaviour
             }
         
         
+    }
+
+    public bool getSOneSTwo()
+    {
+        return (select2 && select1);
     }
 }
