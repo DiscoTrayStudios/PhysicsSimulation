@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         // Frame Rate Limiter (30 fps)
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 30;
+        AutoCamera = false;
 
         if (Instance == null)
         {
