@@ -176,8 +176,8 @@ public class GameManager : MonoBehaviour
 
         SetUpCoM();
         
-
     }
+
 
     void SetUpCoM() {
         centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
@@ -420,6 +420,7 @@ public class GameManager : MonoBehaviour
     public void creditsOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -450,6 +451,7 @@ public class GameManager : MonoBehaviour
     public void backOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(true);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
@@ -581,7 +583,7 @@ public class GameManager : MonoBehaviour
     {
         ObjectCounter = 0;
         timeSlider.GetComponent<Slider>().value = 1;
-        autoCameraToggle.GetComponent<Toggle>().isOn = true;
+        autoCameraToggle.GetComponent<Toggle>().isOn = false;
         Enable();
     }
 
