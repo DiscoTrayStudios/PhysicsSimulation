@@ -49,10 +49,14 @@ public class TutorialText : MonoBehaviour
     {
         if (constantDisable)
         {
-            Disable();
-            if (GameManager.Instance.getObjectCount() == 1)
+            if (!past)
+            {
+                Disable();
+            }
+            if ((GameManager.Instance.getObjectCount() == 1 && clicks == 3) || (GameManager.Instance.getObjectCount() == 2 && clicks == 14))
             {
                 toggleSun(false);
+                toggleEarth(false);
             }
         }
         
@@ -89,10 +93,10 @@ public class TutorialText : MonoBehaviour
     {
         if (clicks == 0)
         {
-            
+
             updateObjects();
             show.GetComponent<Button>().interactable = false;
-            
+
             clearText();
             main.text = "Welcome to the Astronomical Bodies Tutorial! We are going to go into some of the features that make " +
                 "this game more enjoyable! Please use the buttons in the top right to navigate through the tutorial.";
@@ -123,7 +127,7 @@ public class TutorialText : MonoBehaviour
         {
             updateObjects();
             clearText();
-            upper.text = "Right above is all of the astronomical bodies that you can put into the universe. Let's try putting a sun into the world by " + 
+            upper.text = "Right above is all of the astronomical bodies that you can put into the universe. Let's try putting a sun into the world by " +
                 "dragging and dropping the sun icon wherever you would like into the space below.";
             Disable();
             toggleSun(true);
@@ -178,8 +182,8 @@ public class TutorialText : MonoBehaviour
             clearText();
             lower.text = "Now click the toggle camera option in order to turn off the automatic camera. This will allow you to zoom in.";
             cameraToggle.GetComponent<Toggle>().onValueChanged.AddListener((b) => cameraCheck(b));
-            
-            
+
+
         }
         else if (clicks == 8)
         {
@@ -227,16 +231,59 @@ public class TutorialText : MonoBehaviour
             updateObjects();
             clearText();
             upper.text = "You can also destroy the planet by using the trashcan button, or change the trail length.";
+            toggleEarth(false);
         }
         else if (clicks == 14)
+        {
+            past = true;
+            updateObjects();
+            clearText();
+            upper.text = "Let's see what happens with two bodies in the system! Drag an Earth into the system and click 'Next' if it is in a stable orbit.";
+            toggleEarth(true);
+            constantDisable = true;
+        }
+        else if (clicks == 15)
+        {
+            updateObjects();
+            constantDisable = false;
+            Debug.Log(GameManager.Instance.getObjectCount());
+            if (GameManager.Instance.getObjectCount() == 2)
+            {
+                clearText();
+                lower.text = "Great! If you click on both the sun and the earth, you will see them get sort of hazy and geometric. This means they are selected!";
+                toggleEarth(false);
+            }
+            else
+            {
+                clicks = 14;
+                click();
+            }
+        }
+        else if (clicks == 16)
+        {
+            if (GameManager.Instance.getSOneSTwo())
+            {
+                updateObjects();
+                clearText();
+                upper.text = "Above the planet selection you can see the current distance of the two selected bodies!";
+            }
+            else
+            {
+                clicks = 15;
+                click();
+            }
+        }
+
+        //FIX VALUES
+        else if (clicks == 17)
         {
             updateObjects();
             clearText();
             erase();
             main.text = "Those are some of the basics that can help you fully utilize this simulator! Feel free to stay in here and do whatever you'd like, or head back out to the main menu!";
-            
+
         }
-        else if (clicks == 15)
+        else if (clicks == 18)
         {
             updateObjects();
             clearText();
@@ -260,6 +307,7 @@ public class TutorialText : MonoBehaviour
 
     public void Disable()
     {
+        toggleEarth(false);
         cameraToggle.GetComponent<Toggle>().interactable = false;
         timeSlider.GetComponent<Slider>().interactable = false;
         hideButton.GetComponent<Button>().interactable = false;
@@ -348,12 +396,24 @@ public class TutorialText : MonoBehaviour
         }
     }
 
+    public void toggleEarth(bool value)
+    {
+        foreach (Transform child in bodyContainer.transform)
+        {
+            if (child.gameObject.tag.Equals("Earth"))
+            {
+                child.gameObject.GetComponent<DragAndDropCell>().setInteractable(value);
+                child.Find("Planet").gameObject.SetActive(value);
+            }
+        }
+    }
+
     public void Next() //Put cap so click++ does not go too far
     {
         clicks++;
-        if (clicks > 15)
+        if (clicks > 18)
         {
-            clicks = 15;
+            clicks = 18;
         }
         click();
     }
@@ -370,19 +430,14 @@ public class TutorialText : MonoBehaviour
         }
         if (clicks == 2) { toggleSun(false); erase(); }
         if (clicks == 3) { erase(); }
-        if (clicks == 14) { erase(); Disable(); }
-        if (clicks == 13)
-        {
-            clicks = 3;
-            Disable();
-        }
+        if (clicks >12) { clicks = 3; Disable(); past = false; erase(); }
         click();
     }
 
     private void showPressed()
     {
         showClicked = true;
-        if (clicks != 15) //THIS NEEDS TO BE CHANGED TO MAX CLICK COUNT)
+        if (clicks != 18) //THIS NEEDS TO BE CHANGED TO MAX CLICK COUNT)
         {
             clicks = 2;
         }
