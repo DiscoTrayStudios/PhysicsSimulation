@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     Vector2 mouseDragPos;
 
     private int ObjectCounter = 0;
-    private int MAXOBJECTCOUNT = 10;
+    private int MAXOBJECTCOUNT = 12;
     private bool AutoCamera = true;
     private Vector3 startCameraPos;
     private bool draggingNothing;
@@ -110,8 +110,8 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        // Every 30 frames the text updates and the camera repositions
-        if (frames / 30 == 0)
+        // Every 5 frames the text updates and the camera repositions
+        if (frames / 5 == 0)
         {
             foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
             {
@@ -130,6 +130,7 @@ public class GameManager : MonoBehaviour
                     distanceText.GetComponent<TextMeshProUGUI>().text = "Distance: " + distance();
                 }
             }
+            
             if (physObjects.Count > 0)
             {
                 CameraReposition();
@@ -138,10 +139,13 @@ public class GameManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (!tutorialInfo.activeSelf)
-        {
-            Enable();
-        }
+        
+            
+            if (!tutorialInfo.activeSelf)
+            {
+                Enable();
+            }
+        
         
         frames++;
         if (!camera)
@@ -161,7 +165,7 @@ public class GameManager : MonoBehaviour
     {
         physObjects = new List<Gravity>();
         camera = FindObjectOfType<Camera>();
-
+        resetValues();
         foreach (Gravity g in FindObjectsOfType<Gravity>())
         {
             physObjects.Add(g);
@@ -171,8 +175,10 @@ public class GameManager : MonoBehaviour
         }
 
         SetUpCoM();
+        
+
     }
-    
+
     void SetUpCoM() {
         centerOfMassIndicator = Instantiate(CenterOfMassPrefab, centerOfSystem, Quaternion.identity);
         SpriteRenderer sr = centerOfMassIndicator.gameObject.GetComponent<SpriteRenderer>();
@@ -336,7 +342,7 @@ public class GameManager : MonoBehaviour
             {
                 Rigidbody2D GO_RigidBody = go.gameObject.GetComponent<Rigidbody2D>();
                 Rigidbody2D objToAttract = obj.gameObject.GetComponent<Rigidbody2D>();
-                Vector2 direction = go.gameObject.GetComponent<Rigidbody2D>().position - obj.gameObject.GetComponent<Rigidbody2D>().position;
+                Vector2 direction = GO_RigidBody.position - objToAttract.position;
                 float distance = direction.magnitude*distanceModifier;
 
 
@@ -344,7 +350,7 @@ public class GameManager : MonoBehaviour
                 // This is the actual equation for gravitational interaction of two celestial bodies
                 // Fn = G * ((m1*m2)/distance^2)
                 Vector2 force = direction.normalized * ((GO_RigidBody.mass * objToAttract.mass) / (distance * distance)) * G;
-                return force;
+                c += force;
             }
         }
         return c;
@@ -525,7 +531,6 @@ public class GameManager : MonoBehaviour
         pauseMenu.SetActive(true);
         distanceText.SetActive(true);
         showButton.SetActive(false);
-        resetValues();
 
     }
 
@@ -574,6 +579,7 @@ public class GameManager : MonoBehaviour
 
     public void resetValues()
     {
+        ObjectCounter = 0;
         timeSlider.GetComponent<Slider>().value = 1;
         autoCameraToggle.GetComponent<Toggle>().isOn = true;
         Enable();

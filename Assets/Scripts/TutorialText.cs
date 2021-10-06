@@ -214,7 +214,7 @@ public class TutorialText : MonoBehaviour
         {
             updateObjects();
             clearText();
-            main.text = "You should see the sun move in whatever direction you dragged the arrow to be pointing in! If not feel free to press 'Last' to go back";
+            main.text = "You should see the sun move in whatever direction you dragged the arrow to be pointing in! If not feel free to press 'Back' to go back";
         }
         else if (clicks == 12)
         {
@@ -405,7 +405,10 @@ public class TutorialText : MonoBehaviour
     public void cameraCheck(bool b)
     {
         cameraOn = b;
-        cameraToggle.GetComponent<Toggle>().interactable = false ;
+        if (clicks == 7)
+        {
+            cameraToggle.GetComponent<Toggle>().interactable = false;
+        }
     }
 
     public void updateObjects()
