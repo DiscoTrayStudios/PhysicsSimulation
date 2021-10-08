@@ -485,7 +485,7 @@ public class TutorialText : MonoBehaviour
         {
             if (bodies.Contains(thing.tag))
             {
-                GameManager.Instance.deleteOnClick(thing);
+                GameManager.Instance.DestroyBody(thing.GetComponent<Gravity>());
                 
             }
         }

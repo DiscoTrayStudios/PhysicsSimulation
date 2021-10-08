@@ -39,6 +39,7 @@ public class Gravity : MonoBehaviour
 
     private void OnMouseUp()
     {
+
         beingDragged = false;
         rbody.velocity = startVelocity;
         if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this))
