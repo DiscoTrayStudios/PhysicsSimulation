@@ -123,11 +123,11 @@ public class GameManager : MonoBehaviour
 
                 if (Time.timeScale != 0)
                 {
-                    ui.massInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().mass);
-                    ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 100);
-                    ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 100);
-                    ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 100);
-                    ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 100);
+                    ui.massInputField.GetComponent<InputField>().text = "" + g.GetComponent<Rigidbody2D>().mass;
+                    ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 10000)/100;
+                    ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 10000)/100;
+                    ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 10000)/100;
+                    ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 10000)/100;
                     distanceText.GetComponent<TextMeshProUGUI>().text = "Distance: " + distance();
                 }
             }
@@ -140,8 +140,6 @@ public class GameManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        
-            
             if (!tutorialInfo.activeSelf)
             {
                 Enable();
@@ -196,7 +194,7 @@ public class GameManager : MonoBehaviour
         //Vector2 c = CenterOfSystem();
         HashSet<Gravity> toRemove = new HashSet<Gravity>();
         foreach (Gravity go in physObjects) {
-            if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 40) 
+            if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 100) 
             {
                 DestroyBody(go);
                 break;

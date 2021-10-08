@@ -12,6 +12,8 @@ public class Gravity : MonoBehaviour
     public GameObject explosion;
     float screenSize;
     internal bool selected = false;
+    private float downClickTime;
+    private float ClickDeltaTime = .1F;
 
     // Start is called before the first frame update
     void Start()
@@ -24,29 +26,41 @@ public class Gravity : MonoBehaviour
 
     private void OnMouseDown()
     {
-        beingDragged = true;
-        startVelocity = rbody.velocity;
+        downClickTime = Time.time;
     }
 
     private void OnMouseDrag()
     {
-        rbody.velocity = Vector2.zero;
-        Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        pos.z = 0;
-        this.gameObject.transform.position = pos;
-
+        if (Time.time - downClickTime >= ClickDeltaTime)
+        {
+            beingDragged = true;
+            startVelocity = rbody.velocity;
+        }
+        if (beingDragged)
+        {
+            rbody.velocity = Vector2.zero;
+            Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            pos.z = 0;
+            this.gameObject.transform.position = pos;
+        }
     }
 
     private void OnMouseUp()
     {
 
-        beingDragged = false;
-        rbody.velocity = startVelocity;
-        if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this))
+        if (beingDragged)
         {
-            GameManager.Instance.s1.ChangeMaterial();
+            beingDragged = false;
+            rbody.velocity = startVelocity;
         }
-        ChangeMaterial();
+        else 
+        {
+            if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this))
+            {
+                GameManager.Instance.s1.ChangeMaterial();
+            }
+            ChangeMaterial();
+        }
     }
 
     public void ChangeMaterial()
@@ -74,7 +88,7 @@ public class Gravity : MonoBehaviour
         else
         {
             rbody.GetComponentInParent<SpriteRenderer>().material = GameManager.Instance.select;
-            if (GameManager.Instance.s2.Equals(this))
+            if (!(GameManager.Instance.s2 is null) && GameManager.Instance.s2.Equals(this))
             {
                 GameManager.Instance.s2 = null;
                 GameManager.Instance.select2 = false;
