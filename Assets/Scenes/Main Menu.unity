@@ -8476,7 +8476,7 @@ MonoBehaviour:
   select2: 0
   s1: {fileID: 0}
   s2: {fileID: 0}
-  notSelect: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
+  notSelect: {fileID: 2100000, guid: 78f3d91f3d58a6a49b3504b588073367, type: 2}
   select: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   tutorialInfo: {fileID: 679158732}
   centerOfSystem: {x: 0, y: 0}
