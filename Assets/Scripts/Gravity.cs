@@ -72,16 +72,19 @@ public class Gravity : MonoBehaviour
             {
                 GameManager.Instance.s1 = this;
                 GameManager.Instance.select1 = true;
+                GameManager.Instance.highlight(true, true, false);
             }
             else if (!GameManager.Instance.select2)
 			{
                 GameManager.Instance.s2 = this;
                 GameManager.Instance.select2 = true;
+                GameManager.Instance.highlight(true, false, true);
             }
             else
 			{
                 GameManager.Instance.s1 = this;
                 GameManager.Instance.select1 = true;
+                GameManager.Instance.highlight(true, true, false);
             }
             selected = true;
         }
@@ -92,12 +95,14 @@ public class Gravity : MonoBehaviour
             {
                 GameManager.Instance.s2 = null;
                 GameManager.Instance.select2 = false;
+                //GameManager.Instance.highlight(false, false, true);
 
             }
             else
             {
                 GameManager.Instance.s1 = null;
                 GameManager.Instance.select1 = false;
+                //GameManager.Instance.highlight(false, true, false);
             }
             selected = false;
         }

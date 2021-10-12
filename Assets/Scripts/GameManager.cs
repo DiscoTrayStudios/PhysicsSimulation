@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
     public Material notSelect;
     public Material select;
 
+
     public GameObject tutorialInfo;
 
     // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
@@ -231,6 +232,7 @@ public class GameManager : MonoBehaviour
     public void DestroyBody(Gravity g) {
         if(g.Equals(s1))
 		{
+            
             s1 = null;
             select1 = false;
 		}
@@ -607,5 +609,31 @@ public class GameManager : MonoBehaviour
     public bool getSOneSTwo()
     {
         return (select2 && select1);
+    }
+
+    public void highlight(bool yellow, bool one, bool two)
+    {
+        if (yellow)
+        {
+            if (one)
+            {
+                planetControllers[s1].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.yellow;
+            }
+            if (two)
+            {
+                planetControllers[s2].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.yellow;
+            }
+        }
+        else
+        {
+            if (one)
+            {
+                planetControllers[s1].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+            }
+            if (two)
+            {
+                planetControllers[s2].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+            }
+        }
     }
 }
