@@ -14,6 +14,7 @@ public class Gravity : MonoBehaviour
     internal bool selected = false;
     private float downClickTime;
     private float ClickDeltaTime = .1F;
+    private float timeValue;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,8 @@ public class Gravity : MonoBehaviour
             Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             pos.z = 0;
             this.gameObject.transform.position = pos;
+            timeValue = GameManager.Instance.getTimeValue();
+            GameManager.Instance.pauseTime();
         }
     }
 
@@ -52,6 +55,7 @@ public class Gravity : MonoBehaviour
         {
             beingDragged = false;
             rbody.velocity = startVelocity;
+            GameManager.Instance.setTimeScale(timeValue);
         }
         else 
         {
@@ -93,16 +97,18 @@ public class Gravity : MonoBehaviour
             rbody.GetComponentInParent<SpriteRenderer>().material = GameManager.Instance.select;
             if (!(GameManager.Instance.s2 is null) && GameManager.Instance.s2.Equals(this))
             {
+                GameManager.Instance.highlight(false, false, true);
                 GameManager.Instance.s2 = null;
                 GameManager.Instance.select2 = false;
-                //GameManager.Instance.highlight(false, false, true);
+                
 
             }
             else
             {
+                GameManager.Instance.highlight(false, true, false);
                 GameManager.Instance.s1 = null;
                 GameManager.Instance.select1 = false;
-                //GameManager.Instance.highlight(false, true, false);
+                
             }
             selected = false;
         }
