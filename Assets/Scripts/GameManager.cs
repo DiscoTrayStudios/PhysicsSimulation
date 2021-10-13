@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     public bool select1 = false;
     public bool select2 = false;
+
     public Gravity s1;
     public Gravity s2;
     public Material notSelect;
@@ -76,8 +77,13 @@ public class GameManager : MonoBehaviour
 
     public GameObject tutorialInfo;
 
+    private bool setInputFields = false;
+    private int counter = 0;
+
+
     // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
     public Vector2 centerOfSystem;
+
 
 
     private int frames = 0;
@@ -125,13 +131,53 @@ public class GameManager : MonoBehaviour
 
                 if (Time.timeScale != 0)
                 {
-                    ui.massInputField.GetComponent<InputField>().text = "" + g.GetComponent<Rigidbody2D>().mass;
-                    ui.posXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 10000)/100;
-                    ui.posYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 10000)/100;
-                    ui.velocityXInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 10000)/100;
-                    ui.velocityYInputField.GetComponent<InputField>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 10000)/100;
+                    setInputFields = false;
+                    counter = 0;
+                    ui.massTextField.SetActive(true);
+                    ui.posXTextField.SetActive(true);
+                    ui.posYTextField.SetActive(true);
+                    ui.velocityXTextField.SetActive(true);
+                    ui.velocityYTextField.SetActive(true);
+                    ui.massInputField.SetActive(false);
+                    ui.posXInputField.SetActive(false);
+                    ui.posYInputField.SetActive(false);
+                    ui.velocityXInputField.SetActive(false);
+                    ui.velocityYInputField.SetActive(false);
+                    ui.massTextField.GetComponent<Text>().text = "" + g.GetComponent<Rigidbody2D>().mass;
+                    ui.posXTextField.GetComponent<Text>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.x * 10000) / 100;
+                    ui.posYTextField.GetComponent<Text>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().position.y * 10000) / 100;
+                    ui.velocityXTextField.GetComponent<Text>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.x * 10000) / 100;
+                    ui.velocityYTextField.GetComponent<Text>().text = "" + Mathf.Round(g.GetComponent<Rigidbody2D>().velocity.y * 10000) / 100;
                     distanceText.GetComponent<TextMeshProUGUI>().text = "Distance: " + distance();
                 }
+                else
+                {
+
+                    ui.massInputField.SetActive(true);
+                    ui.posXInputField.SetActive(true);
+                    ui.posYInputField.SetActive(true);
+                    ui.velocityXInputField.SetActive(true);
+                    ui.velocityYInputField.SetActive(true);
+                    if (!setInputFields)
+                    {
+                        ui.massInputField.GetComponent<InputField>().text = "" + ui.massTextField.GetComponent<Text>().text;
+                        ui.posXInputField.GetComponent<InputField>().text = "" + ui.posXTextField.GetComponent<Text>().text;
+                        ui.posYInputField.GetComponent<InputField>().text = "" + ui.posYTextField.GetComponent<Text>().text;
+                        ui.velocityXInputField.GetComponent<InputField>().text = "" + ui.velocityXTextField.GetComponent<Text>().text;
+                        ui.velocityYInputField.GetComponent<InputField>().text = "" + ui.velocityYTextField.GetComponent<Text>().text;
+                        counter +=1;
+                        if (counter.Equals(physObjects.Count))
+                        {
+                            setInputFields = true; 
+                        }
+                    }
+                    ui.massTextField.SetActive(false);
+                    ui.posXTextField.SetActive(false);
+                    ui.posYTextField.SetActive(false);
+                    ui.velocityXTextField.SetActive(false);
+                    ui.velocityYTextField.SetActive(false);
+                }
+
             }
             
             if (physObjects.Count > 0)
@@ -167,7 +213,6 @@ public class GameManager : MonoBehaviour
     {
         physObjects = new List<Gravity>();
         camera = FindObjectOfType<Camera>();
-        resetValues();
         foreach (Gravity g in FindObjectsOfType<Gravity>())
         {
             physObjects.Add(g);
@@ -384,6 +429,8 @@ public class GameManager : MonoBehaviour
 
     public void startOnClick()
     {
+
+        resetValues();
         volumeSlider.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
@@ -396,6 +443,7 @@ public class GameManager : MonoBehaviour
         cellContainer.SetActive(true);
         tutorialInfo.SetActive(false);
         Destroy(volumeButtontemp);
+
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
     }
 
@@ -595,12 +643,15 @@ public class GameManager : MonoBehaviour
         ObjectCounter = 0;
         timeSlider.GetComponent<Slider>().value = 1;
         autoCameraToggle.GetComponent<Toggle>().isOn = false;
+        autoPause.GetComponent<Toggle>().isOn = false;
         Enable();
+        Debug.Log("J");
     }
 
 
     public void Enable()
     {
+        autoPause.GetComponent<Toggle>().interactable = true;
         autoCameraToggle.GetComponent<Toggle>().interactable = true;
         timeSlider.GetComponent<Slider>().interactable = true;
         hideButton.GetComponent<Button>().interactable = true;
