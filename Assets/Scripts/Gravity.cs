@@ -59,7 +59,7 @@ public class Gravity : MonoBehaviour
         }
         else 
         {
-            if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this))
+            if (GameManager.Instance.select1 && GameManager.Instance.select2 && !GameManager.Instance.s1.Equals(this) && !GameManager.Instance.s2.Equals(this))
             {
                 GameManager.Instance.s1.ChangeMaterial();
             }
