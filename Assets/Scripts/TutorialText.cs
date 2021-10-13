@@ -25,6 +25,7 @@ public class TutorialText : MonoBehaviour
     public GameObject timeText;
     public GameObject cameraToggle;
     public GameObject volumeButton;
+    public GameObject autoPause;
 
 
     private int clicks;
@@ -142,11 +143,13 @@ public class TutorialText : MonoBehaviour
             Debug.Log(GameManager.Instance.getObjectCount());
             if (GameManager.Instance.getObjectCount() == 1)
             {
+                autoPause.GetComponent<Toggle>().isOn = false;
                 clearText();
-                lower.text = "Great! Now let's set the simulation speed to 0, which will stop all movement. You can do this by moving the slider all the way to the left.";
+                lower.text = "Great! Now let's set the simulation speed to 0, which will stop all movement. You can do this by moving the slider all the way to the left or clicking the 'Pause Time' button.";
                 timeSlider.GetComponent<Slider>().onValueChanged.AddListener((i) => timeCompare(i));
                 toggleSun(false);
                 timeSlider.GetComponent<Slider>().interactable = true;
+                autoPause.GetComponent<Toggle>().interactable = true;
             }
             else
             {
@@ -157,6 +160,7 @@ public class TutorialText : MonoBehaviour
         else if (clicks == 5)
         {
             updateObjects();
+            timeCompare(0);
             if (timeStopped)
             {
                 constantDisable = false;
@@ -211,6 +215,7 @@ public class TutorialText : MonoBehaviour
             clearText();
             lower.text = "Try clicking and dragging the arrow in a different direction, then zoom out, toggle the camera, and increase the simulation speed slowly.";
             cameraToggle.GetComponent<Toggle>().interactable = true;
+            autoPause.GetComponent<Toggle>().interactable = true;
             timeSlider.GetComponent<Slider>().interactable = true;
         }
 
@@ -250,7 +255,7 @@ public class TutorialText : MonoBehaviour
             if (GameManager.Instance.getObjectCount() == 2)
             {
                 clearText();
-                lower.text = "Great! If you click on both the sun and the earth, you will see them get sort of hazy and geometric. This means they are selected!";
+                lower.text = "Great! If you click on both the sun and the earth, you will see them get an outline, along with their value tables. This means they are selected!";
                 toggleEarth(false);
             }
             else
@@ -265,7 +270,7 @@ public class TutorialText : MonoBehaviour
             {
                 updateObjects();
                 clearText();
-                upper.text = "Above the planet selection you can see the current distance of the two selected bodies!";
+                lower.text = "Just below is the current distance of the two selected bodies!";
             }
             else
             {
@@ -308,6 +313,7 @@ public class TutorialText : MonoBehaviour
     public void Disable()
     {
         toggleEarth(false);
+        autoPause.GetComponent<Toggle>().interactable = false;
         cameraToggle.GetComponent<Toggle>().interactable = false;
         timeSlider.GetComponent<Slider>().interactable = false;
         hideButton.GetComponent<Button>().interactable = false;
@@ -347,6 +353,7 @@ public class TutorialText : MonoBehaviour
 
     public void Enable()
     {
+        autoPause.GetComponent<Toggle>().interactable = true;
         cameraToggle.GetComponent<Toggle>().interactable = true;
         timeSlider.GetComponent<Slider>().interactable = true;
         hideButton.GetComponent<Button>().interactable = true;
@@ -447,14 +454,7 @@ public class TutorialText : MonoBehaviour
 
     public void timeCompare(float f)
     {
-        if (f == 0)
-        {
-            timeStopped = true;
-        }
-        else
-        {
-            timeStopped = false;
-        }
+        timeStopped = (GameManager.Instance.getTimeValue() == 0) || GameManager.Instance.autoPause.GetComponent<Toggle>().isOn;
     }
 
     public void cameraCheck(bool b)
@@ -481,13 +481,9 @@ public class TutorialText : MonoBehaviour
     public void erase()
     {
         updateObjects();
-        foreach (GameObject thing in objects)
+        while (GameManager.Instance.physObjects.Count != 0)
         {
-            if (bodies.Contains(thing.tag))
-            {
-                GameManager.Instance.DestroyBody(thing.GetComponent<Gravity>());
-                
-            }
+            GameManager.Instance.DestroyBody(GameManager.Instance.physObjects[0]);
         }
         updateObjects();
     }

@@ -30,6 +30,7 @@ public class SpriteOutline : MonoBehaviour
         spriteRenderer.GetPropertyBlock(mpb);
         mpb.SetFloat("_Outline", outline ? 1f : 0);
         mpb.SetColor("_OutlineColor", color);
+        mpb.SetFloat("_OutlineSize", 2);
         spriteRenderer.SetPropertyBlock(mpb);
     }
 }

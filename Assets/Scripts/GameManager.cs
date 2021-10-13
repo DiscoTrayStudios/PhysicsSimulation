@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
 
     // Gravity
     static float G = 0.667408f;
-    List<Gravity> physObjects;
-    Dictionary<Gravity, GameObject> planetControllers = new Dictionary<Gravity, GameObject>();
+    public List<Gravity> physObjects;
+    public Dictionary<Gravity, GameObject> planetControllers = new Dictionary<Gravity, GameObject>();
     
 
-    public GameObject startButton, creditsButton, howToButton, volumeButton, volumeButtontemp, backButton, timeSlider, menuButton, showButton, hideButton, pauseMenu, autoCameraToggle;
+    public GameObject startButton, creditsButton, howToButton, volumeButton, volumeButtontemp, backButton, timeSlider, menuButton, showButton, hideButton, pauseMenu, autoCameraToggle, autoPause;
     public GameObject titleText, creditsText, howToText, distanceText;
     public GameObject volumeSlider;
     public GameObject canvas;
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
     private bool AutoCamera = true;
     private Vector3 startCameraPos;
     private bool draggingNothing;
+    private float savedTimeValue = 1;
 
     public bool select1 = false;
     public bool select2 = false;
@@ -158,6 +159,7 @@ public class GameManager : MonoBehaviour
             CullFaroffObjects();
             centerOfSystem = CenterOfSystem();
             centerOfMassIndicator.transform.position = centerOfSystem;
+            if (centerOfSystem.Equals(Vector2.zero)) { centerOfMassIndicator.transform.position = camera.transform.position;}
             frames = 0;
         }
     }
@@ -262,6 +264,7 @@ public class GameManager : MonoBehaviour
             //Debug.Log("CenterOfSystem");
         }
         if (physObjects.Count > 0) v /= totalMass;
+
         return v;
     }
 
@@ -410,11 +413,10 @@ public class GameManager : MonoBehaviour
         scrollView.SetActive(false);
         cellContainer.SetActive(false);
         tutorialInfo.SetActive(false);
-        foreach (Transform child in Content.transform)
+        while (physObjects.Count != 0)
         {
-            GameObject.Destroy(child.gameObject);
+            DestroyBody(physObjects[0]);
         }
-        planetControllers.Clear();
         StartCoroutine(LoadYourAsyncScene("Main Menu"));
     }
 
@@ -468,6 +470,7 @@ public class GameManager : MonoBehaviour
     public void pauseOnClick()
     {
         setTimeScale(1 - Time.timeScale);
+        
     }
 
     public void deleteOnClick(GameObject container)
@@ -499,6 +502,10 @@ public class GameManager : MonoBehaviour
     // TIME
     public void setTimeScale(float t)
     {
+        if (t != 0)
+        {
+            autoPause.GetComponent<Toggle>().isOn = false;
+        }
         Time.timeScale = t;
         Time.fixedDeltaTime = SIM_TIME_STEP * Time.timeScale;
     }
@@ -578,6 +585,7 @@ public class GameManager : MonoBehaviour
     public float getTimeValue()
     {
         return timeSlider.GetComponent<Slider>().value;
+
     }
 
 
@@ -628,12 +636,32 @@ public class GameManager : MonoBehaviour
         {
             if (one)
             {
-                planetControllers[s1].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+                Color c = planetControllers[s1].transform.GetChild(0).gameObject.GetComponent<Image>().color;
+                c = Color.white;
+                c.a = 0.3921f;
+                planetControllers[s1].transform.GetChild(0).gameObject.GetComponent<Image>().color = c;
             }
             if (two)
             {
-                planetControllers[s2].transform.GetChild(0).gameObject.GetComponent<Image>().color = Color.white;
+                Color c = planetControllers[s2].transform.GetChild(0).gameObject.GetComponent<Image>().color;
+                c = Color.white;
+                c.a = 0.3921f;
+                planetControllers[s2].transform.GetChild(0).gameObject.GetComponent<Image>().color = c;
             }
+        }
+    }
+
+
+    public void timeToggle()
+    {
+        if (autoPause.GetComponent<Toggle>().isOn)
+        {
+            savedTimeValue = getTimeValue();
+            setTimeScale(0);
+        }
+        else 
+        { 
+            setTimeScale(savedTimeValue);
         }
     }
 }
