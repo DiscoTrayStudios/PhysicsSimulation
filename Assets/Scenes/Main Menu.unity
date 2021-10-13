@@ -5790,8 +5790,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Programmers - \nIan Campbell, Jonathon Qualls, Jake Nordin, Cade Phillips,
-    Eric Pinter, Thomas Sebring, Caleb Williams\n\nSources -\nMain Menu Background\nhttps://www.nasa.gov/mission_pages/hubble/multimedia/index.html\n\nVolume
+  m_text: "Programmers and Contributors- \nIan Campbell, Jonathon Qualls, Caleb Williams,
+    Dr. Ann Wright, Jake Nordin, Cade Phillips, Eric Pinter, Thomas Sebring\n\nSpecial
+    Thanks To-\nHendrix College Physics Department\nDisco Tray Studios\n\nSources
+    -\nMain Menu Background\nhttps://www.nasa.gov/mission_pages/hubble/multimedia/index.html\n\nSprite
+    Outline\nRyan Nielson\nhttps://nielson.dev/2016/04/2d-sprite-outlines-in-unity\n\nVolume
     Button\nhttps://www.shutterstock.com/image-vector/volume-icon-209142427\r\n\nAmbient
     Music\nhttps://opengameart.org/content/space-ambient\r\n\nDrag and Drop Code\nhttps://assetstore.unity.com/packages/tools/gui/simple-drag-and-drop-66449\r\n\nExplosion
     Sound\nhttps://opengameart.org/content/atari-booms\r\n\nExplosion Animation\nhttps://opengameart.org/content/explosion-3"

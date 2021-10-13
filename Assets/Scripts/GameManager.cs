@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
                         counter +=1;
                         if (counter.Equals(physObjects.Count))
                         {
-                            setInputFields = true;
+                            setInputFields = true; 
                         }
                     }
                     ui.massTextField.SetActive(false);
