@@ -11,6 +11,7 @@ public class UIControllerSetup : MonoBehaviour
     public GameObject massSlider;
     public GameObject trailSlider;
     public GameObject massInputField, posXInputField, posYInputField, velocityXInputField, velocityYInputField;
+    public GameObject massTextField, posXTextField, posYTextField, velocityXTextField, velocityYTextField;
     public GameObject colorPicker;
     public List<Color> colors;
     public Gravity grav;
