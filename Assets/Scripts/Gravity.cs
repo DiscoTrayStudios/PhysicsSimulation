@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gravity : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Gravity : MonoBehaviour
     public GameObject explosion;
     float screenSize;
     internal bool selected = false;
+    private System.DateTime now;
     private float downClickTime;
     private float ClickDeltaTime = .1F;
     private float timeValue;
@@ -27,12 +29,12 @@ public class Gravity : MonoBehaviour
 
     private void OnMouseDown()
     {
-        downClickTime = Time.time;
+		now = System.DateTime.Now.AddSeconds(.1);
     }
 
     private void OnMouseDrag()
     {
-        if (Time.time - downClickTime >= ClickDeltaTime)
+        if (System.DateTime.Now > now)
         {
             beingDragged = true;
             startVelocity = rbody.velocity;
@@ -55,7 +57,10 @@ public class Gravity : MonoBehaviour
         {
             beingDragged = false;
             rbody.velocity = startVelocity;
-            GameManager.Instance.setTimeScale(timeValue);
+            if (!GameManager.Instance.autoPause.GetComponent<Toggle>().isOn)
+            {
+                GameManager.Instance.setTimeScale(timeValue);
+            }
         }
         else 
         {

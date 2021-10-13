@@ -471,6 +471,7 @@ public class GameManager : MonoBehaviour
     public void creditsOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -501,6 +502,7 @@ public class GameManager : MonoBehaviour
     public void backOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(true);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
