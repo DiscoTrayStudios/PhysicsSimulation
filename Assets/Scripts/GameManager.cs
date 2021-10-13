@@ -442,7 +442,7 @@ public class GameManager : MonoBehaviour
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
         tutorialInfo.SetActive(false);
-        Destroy(volumeButtontemp);
+        volumeButtontemp.SetActive(false);
 
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
     }
@@ -494,7 +494,7 @@ public class GameManager : MonoBehaviour
         showButton.SetActive(true);
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
-        Destroy(volumeButtontemp);
+        volumeButtontemp.SetActive(false);
         tutorialInfo.SetActive(true);
         StartCoroutine(LoadYourAsyncScene("Tutorial"));
     }
