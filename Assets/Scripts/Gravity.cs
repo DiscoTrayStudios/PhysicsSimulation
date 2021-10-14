@@ -14,8 +14,6 @@ public class Gravity : MonoBehaviour
     float screenSize;
     internal bool selected = false;
     private System.DateTime now;
-    private float downClickTime;
-    private float ClickDeltaTime = .1F;
     private float timeValue;
 
     // Start is called before the first frame update
@@ -157,30 +155,22 @@ public class Gravity : MonoBehaviour
 
     public void changePosX(float m)
     {
-        //Vector3 temp = new Vector3(m, rbody.position.y, 0);
         rbody.transform.position = new Vector3(m, rbody.position.y, 0);
-        //SetSize();
     }
 
     public void changePosY(float m)
     {
-        //Vector3 temp = new Vector3(rbody.position.x, m, 0);
         rbody.position = new Vector3(rbody.position.x, m, 0);
-        //SetSize();
     }
 
     public void changeVelocityX(float m)
     {
-        //Vector3 temp = new Vector3(m, rbody.velocity.y, 0);
         rbody.velocity = new Vector3(m, rbody.velocity.y, 0);
-        //SetSize();
     }
 
     public void changeVelocityY(float m)
     {
-        //Vector3 temp = new Vector3(rbody.velocity.x, m, 0);
         rbody.velocity = new Vector3(rbody.velocity.x, m, 0);
-        //SetSize();
     }
 
 
