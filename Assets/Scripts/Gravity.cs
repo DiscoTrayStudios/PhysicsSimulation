@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gravity : MonoBehaviour
 {
@@ -12,8 +13,7 @@ public class Gravity : MonoBehaviour
     public GameObject explosion;
     float screenSize;
     internal bool selected = false;
-    private float downClickTime;
-    private float ClickDeltaTime = .1F;
+    private System.DateTime now;
     private float timeValue;
 
     // Start is called before the first frame update
@@ -27,12 +27,12 @@ public class Gravity : MonoBehaviour
 
     private void OnMouseDown()
     {
-        downClickTime = Time.time;
+		now = System.DateTime.Now.AddSeconds(.1);
     }
 
     private void OnMouseDrag()
     {
-        if (Time.time - downClickTime >= ClickDeltaTime)
+        if (System.DateTime.Now > now)
         {
             beingDragged = true;
             startVelocity = rbody.velocity;
@@ -55,7 +55,10 @@ public class Gravity : MonoBehaviour
         {
             beingDragged = false;
             rbody.velocity = startVelocity;
-            GameManager.Instance.setTimeScale(timeValue);
+            if (!GameManager.Instance.autoPause.GetComponent<Toggle>().isOn)
+            {
+                GameManager.Instance.setTimeScale(timeValue);
+            }
         }
         else 
         {
@@ -152,30 +155,22 @@ public class Gravity : MonoBehaviour
 
     public void changePosX(float m)
     {
-        //Vector3 temp = new Vector3(m, rbody.position.y, 0);
         rbody.transform.position = new Vector3(m, rbody.position.y, 0);
-        //SetSize();
     }
 
     public void changePosY(float m)
     {
-        //Vector3 temp = new Vector3(rbody.position.x, m, 0);
         rbody.position = new Vector3(rbody.position.x, m, 0);
-        //SetSize();
     }
 
     public void changeVelocityX(float m)
     {
-        //Vector3 temp = new Vector3(m, rbody.velocity.y, 0);
         rbody.velocity = new Vector3(m, rbody.velocity.y, 0);
-        //SetSize();
     }
 
     public void changeVelocityY(float m)
     {
-        //Vector3 temp = new Vector3(rbody.velocity.x, m, 0);
         rbody.velocity = new Vector3(rbody.velocity.x, m, 0);
-        //SetSize();
     }
 
 
