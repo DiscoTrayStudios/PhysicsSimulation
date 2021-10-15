@@ -74,19 +74,14 @@ public class GameManager : MonoBehaviour
     public Material notSelect;
     public Material select;
 
-
     public GameObject tutorialInfo;
 
     private bool setInputFields = false;
     private int counter = 0;
 
-
-    // This is in almost every place there was a CenterOfSystem(); Should lessen calculations per second.
     public Vector2 centerOfSystem;
 
-
-
-    private int frames = 0;
+    private System.DateTime updateTime = System.DateTime.Now.AddSeconds(.02);
 
     private void Awake()
     {
@@ -119,8 +114,8 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        // Every 5 frames the text updates and the camera repositions
-        if (frames / 5 == 0)
+        // ui updates
+        if (updateTime < System.DateTime.Now)
         {
             foreach (KeyValuePair<Gravity, GameObject> keyValue in planetControllers)
             {
@@ -177,13 +172,13 @@ public class GameManager : MonoBehaviour
                     ui.velocityXTextField.SetActive(false);
                     ui.velocityYTextField.SetActive(false);
                 }
-
             }
-            
-            if (physObjects.Count > 0)
-            {
-                CameraReposition();
-            }
+            updateTime = System.DateTime.Now.AddSeconds(.1);
+        }
+        // Camera Repositioning
+        if (physObjects.Count > 0)
+        {
+            CameraReposition();
         }
     }
     void FixedUpdate()
@@ -194,19 +189,17 @@ public class GameManager : MonoBehaviour
             }
         
         
-        frames++;
         if (!camera)
         {
             LoadScene();
         }
         // Increase frames by one; every 30 frames update these functions and set frames to 0
-        if (frames / 30 == 0)
+        if (updateTime < System.DateTime.Now)
         {
             CullFaroffObjects();
             centerOfSystem = CenterOfSystem();
             centerOfMassIndicator.transform.position = centerOfSystem;
             if (centerOfSystem.Equals(Vector2.zero)) { centerOfMassIndicator.transform.position = camera.transform.position;}
-            frames = 0;
         }
     }
     void LoadScene()
@@ -296,7 +289,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Objects: " + ObjectCounter);
     }
 
-    // Called once every 30 frames (frame cap is at 30 fps)
     public Vector2 CenterOfSystem()
     {
         Vector2 v = Vector2.zero;
@@ -313,7 +305,6 @@ public class GameManager : MonoBehaviour
         return v;
     }
 
-    // Called once every 5 frames (frame cap is at 30 fps)
     public void CameraReposition()
     {
         if (AutoCamera)
@@ -392,9 +383,7 @@ public class GameManager : MonoBehaviour
                 Rigidbody2D GO_RigidBody = go.gameObject.GetComponent<Rigidbody2D>();
                 Rigidbody2D objToAttract = obj.gameObject.GetComponent<Rigidbody2D>();
                 Vector2 direction = GO_RigidBody.position - objToAttract.position;
-                float distance = direction.magnitude*distanceModifier;
-
-
+                float distance = direction.magnitude * distanceModifier;
 
                 // This is the actual equation for gravitational interaction of two celestial bodies
                 // Fn = G * ((m1*m2)/distance^2)
@@ -442,7 +431,7 @@ public class GameManager : MonoBehaviour
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
         tutorialInfo.SetActive(false);
-        Destroy(volumeButtontemp);
+        volumeButtontemp.SetActive(false);
 
         StartCoroutine(LoadYourAsyncScene(presetLevels[selectedLevel]));
     }
@@ -450,6 +439,7 @@ public class GameManager : MonoBehaviour
     public void menuOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(true);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
@@ -471,6 +461,7 @@ public class GameManager : MonoBehaviour
     public void creditsOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(false);
         titleText.SetActive(false);
         startButton.SetActive(false);
         howToButton.SetActive(false);
@@ -493,7 +484,7 @@ public class GameManager : MonoBehaviour
         showButton.SetActive(true);
         scrollView.SetActive(true);
         cellContainer.SetActive(true);
-        Destroy(volumeButtontemp);
+        volumeButtontemp.SetActive(false);
         tutorialInfo.SetActive(true);
         StartCoroutine(LoadYourAsyncScene("Tutorial"));
     }
@@ -501,6 +492,7 @@ public class GameManager : MonoBehaviour
     public void backOnClick()
     {
         volumeSlider.SetActive(false);
+        volumeButtontemp.SetActive(true);
         titleText.SetActive(true);
         startButton.SetActive(true);
         howToButton.SetActive(true);
