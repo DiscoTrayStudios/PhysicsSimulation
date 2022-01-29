@@ -25,6 +25,16 @@ public class Gravity : MonoBehaviour
         SetSize();
     }
 
+    private void FixedUpdate()
+    {
+        if (!beingDragged)
+        {
+            Vector2 v = GameManager.Instance.deltaV(this);
+            if (!IsInvalid(v))
+                rbody.AddForce(v);
+        }
+    }
+
     private void OnMouseDown()
     {
 		now = System.DateTime.Now.AddSeconds(.1);
@@ -122,17 +132,6 @@ public class Gravity : MonoBehaviour
         return rbody.gameObject.transform.parent.gameObject.tag;
     }
 
-
-    private void FixedUpdate()
-    {
-        if (!beingDragged) 
-        { 
-            Vector2 v = GameManager.Instance.deltaV(this);
-            if (!IsInvalid(v))
-                rbody.AddForce(v);
-        }
-    }
-
     bool IsInvalid(Vector2 v) {
         return float.IsNaN(v.x) || float.IsInfinity(v.x)
             || float.IsNaN(v.y) || float.IsInfinity(v.y);
@@ -203,7 +202,7 @@ public class Gravity : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("trigger collision");
+        //Debug.Log("trigger collision");
         Gravity otherGrav = collision.gameObject.GetComponent<Gravity>();
 
         //The collided object that survives is either the more massive one, or arbitrarily decided

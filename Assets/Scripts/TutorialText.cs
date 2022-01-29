@@ -140,7 +140,7 @@ public class TutorialText : MonoBehaviour
             updateObjects();
             constantDisable = false;
             Disable();
-            Debug.Log(GameManager.Instance.getObjectCount());
+            //Debug.Log(GameManager.Instance.getObjectCount());
             if (GameManager.Instance.getObjectCount() == 1)
             {
                 autoPause.GetComponent<Toggle>().isOn = false;
@@ -251,7 +251,7 @@ public class TutorialText : MonoBehaviour
         {
             updateObjects();
             constantDisable = false;
-            Debug.Log(GameManager.Instance.getObjectCount());
+            //Debug.Log(GameManager.Instance.getObjectCount());
             if (GameManager.Instance.getObjectCount() == 2)
             {
                 clearText();
