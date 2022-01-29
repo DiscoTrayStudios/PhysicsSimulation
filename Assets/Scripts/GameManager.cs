@@ -196,9 +196,10 @@ public class GameManager : MonoBehaviour
         // Increase frames by one; every 30 frames update these functions and set frames to 0
         if (updateTime < System.DateTime.Now)
         {
+            CenterOfSystem();
             CullFaroffObjects();
-            centerOfSystem = CenterOfSystem();
-            centerOfMassIndicator.transform.position = centerOfSystem;
+            // centerOfSystem = CenterOfSystem();
+            // centerOfMassIndicator.transform.position = centerOfSystem;
             if (centerOfSystem.Equals(Vector2.zero)) { centerOfMassIndicator.transform.position = camera.transform.position;}
         }
     }
@@ -211,7 +212,7 @@ public class GameManager : MonoBehaviour
             physObjects.Add(g);
             NewPlanetController(g, g.getTag());
             ++ObjectCounter;
-            Debug.Log("Objects: " + ObjectCounter);
+            //Debug.Log("Objects: " + ObjectCounter);
         }
 
         SetUpCoM();
@@ -257,16 +258,14 @@ public class GameManager : MonoBehaviour
 
     public void CreateBody(Vector2 pos, GameObject planet)
     {
-        if (ObjectCounter < MAXOBJECTCOUNT)
-        { 
-            Gravity g = SpawnScript.SpawnNewPlanet(pos, planet);
-            colortemp = SpawnScript.getColor();
-            planettemp = SpawnScript.getPrefab();
-            physObjects.Add(g);
-            ++ObjectCounter;
-            Debug.Log("Objects: " + ObjectCounter);
-            NewPlanetController(g, planettemp);
-    }
+        //if(ObjectCounter < MAXOBJECTCOUNT)
+        Gravity g = SpawnScript.SpawnNewPlanet(pos, planet);
+        colortemp = SpawnScript.getColor();
+        planettemp = SpawnScript.getPrefab();
+        physObjects.Add(g);
+        ++ObjectCounter;
+        //Debug.Log("Objects: " + ObjectCounter);
+        NewPlanetController(g, planettemp);
     }
 
     public void DestroyBody(Gravity g) {
@@ -286,10 +285,10 @@ public class GameManager : MonoBehaviour
         Destroy(planetControllers[g]);
         planetControllers.Remove(g);
         --ObjectCounter;
-        Debug.Log("Objects: " + ObjectCounter);
+        //Debug.Log("Objects: " + ObjectCounter);
     }
 
-    public Vector2 CenterOfSystem()
+    public void CenterOfSystem()
     {
         Vector2 v = Vector2.zero;
         float totalMass = 0.0f;
@@ -302,7 +301,7 @@ public class GameManager : MonoBehaviour
         }
         if (physObjects.Count > 0) v /= totalMass;
 
-        return v;
+        centerOfMassIndicator.transform.position = v;
     }
 
     public void CameraReposition()
@@ -516,11 +515,11 @@ public class GameManager : MonoBehaviour
     public void deleteOnClick(GameObject container)
     {
         int check1 = planetControllers.Count;
-        Debug.Log("planetControllers.Count(Before):" + check1);
-        Debug.Log(container.ToString());
+        //Debug.Log("planetControllers.Count(Before):" + check1);
+        //Debug.Log(container.ToString());
         foreach (KeyValuePair<Gravity, GameObject> item in planetControllers)
         {
-            Debug.Log(item.Value.ToString());
+            //Debug.Log(item.Value.ToString());
             if (container == item.Value)
             {
                 DestroyBody(item.Key);
@@ -536,7 +535,7 @@ public class GameManager : MonoBehaviour
             }
         }
         int check2 = planetControllers.Count;
-        Debug.Log("planetControllers.Count(After):" + check2);
+        //Debug.Log("planetControllers.Count(After):" + check2);
     }
 
     // TIME
@@ -637,7 +636,7 @@ public class GameManager : MonoBehaviour
         autoCameraToggle.GetComponent<Toggle>().isOn = false;
         autoPause.GetComponent<Toggle>().isOn = false;
         Enable();
-        Debug.Log("J");
+        //Debug.Log("J");
     }
 
 
