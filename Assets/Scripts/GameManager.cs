@@ -340,9 +340,14 @@ public class GameManager : MonoBehaviour
             }
             else { zoomTicks = 0; }
 
-            if (zoomTicks > zoomDelay || zoomTicks < -zoomDelay)
-            {
-                camera.orthographicSize += .1f * Mathf.Sign(zoomTicks);
+            if (camera.orthographicSize > 1) {
+                if (zoomTicks > zoomDelay || zoomTicks < -zoomDelay)
+                {
+                    camera.orthographicSize += .1f * Mathf.Sign(zoomTicks);
+                }
+            }
+            if (camera.orthographicSize < 1) {
+                camera.orthographicSize = 1f;
             }
         }
         else {
