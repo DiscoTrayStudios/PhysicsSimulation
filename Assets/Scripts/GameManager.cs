@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     // Camera Controls
     float cameraShiftTolerance = .09f;
-    float zoomInTolerance = .45f;
+    float zoomInTolerance = .4f;
     float zoomOutTolerance = .1f;
     int zoomTicks = 1;
     const int zoomDelay = 0;
@@ -196,10 +196,9 @@ public class GameManager : MonoBehaviour
         // Increase frames by one; every 30 frames update these functions and set frames to 0
         if (updateTime < System.DateTime.Now)
         {
-            CenterOfSystem();
+            centerOfSystem = CenterOfSystem();
+            centerOfMassIndicator.transform.position = centerOfSystem;
             CullFaroffObjects();
-            // centerOfSystem = CenterOfSystem();
-            // centerOfMassIndicator.transform.position = centerOfSystem;
             if (centerOfSystem.Equals(Vector2.zero)) { centerOfMassIndicator.transform.position = camera.transform.position;}
         }
     }
@@ -236,7 +235,7 @@ public class GameManager : MonoBehaviour
         //Vector2 c = CenterOfSystem();
         HashSet<Gravity> toRemove = new HashSet<Gravity>();
         foreach (Gravity go in physObjects) {
-            if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 100) 
+            if ((go.GetComponent<Rigidbody2D>().position - centerOfSystem).magnitude > 1000) 
             {
                 DestroyBody(go);
                 break;
@@ -288,7 +287,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Objects: " + ObjectCounter);
     }
 
-    public void CenterOfSystem()
+    public Vector2 CenterOfSystem()
     {
         Vector2 v = Vector2.zero;
         float totalMass = 0.0f;
@@ -301,7 +300,7 @@ public class GameManager : MonoBehaviour
         }
         if (physObjects.Count > 0) v /= totalMass;
 
-        centerOfMassIndicator.transform.position = v;
+        return v;
     }
 
     public void CameraReposition()
@@ -312,7 +311,7 @@ public class GameManager : MonoBehaviour
             Vector3 center = centerOfSystem;
             center.z = camera.transform.position.z;
             if ((camera.transform.position - center).magnitude > cameraShiftTolerance)
-                camera.transform.position = Vector3.Lerp(camera.transform.position, center, .005f);
+                camera.transform.position = Vector3.Lerp(camera.transform.position, center, .05f);
 
             bool needToZoomOut = false;
             bool needToZoomIn = true;
@@ -341,15 +340,27 @@ public class GameManager : MonoBehaviour
             }
             else { zoomTicks = 0; }
 
-            if (zoomTicks > zoomDelay || zoomTicks < -zoomDelay)
-            {
-                camera.orthographicSize += .025f * Mathf.Sign(zoomTicks);
+            if (camera.orthographicSize > 1) {
+                if (zoomTicks > zoomDelay || zoomTicks < -zoomDelay)
+                {
+                    camera.orthographicSize += .1f * Mathf.Sign(zoomTicks);
+                }
+            }
+            if (camera.orthographicSize < 1) {
+                camera.orthographicSize = 1f;
             }
         }
         else {
 
-            if (camera.orthographicSize > .01) 
-                camera.orthographicSize -= .2f * Input.mouseScrollDelta.y;
+            if (camera.orthographicSize >= 1) 
+            {
+                int mult = (int)(1 + camera.orthographicSize / 5);
+                camera.orthographicSize -= .5f * mult * Input.mouseScrollDelta.y;
+                if (camera.orthographicSize < 1) 
+                {
+                    camera.orthographicSize = 1f; 
+                }
+            }
 
             Vector3 dragLoc = camera.ScreenToWorldPoint(Input.mousePosition);
 
