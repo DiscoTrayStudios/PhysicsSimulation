@@ -206,6 +206,7 @@ public class Gravity : MonoBehaviour
         Gravity otherGrav = collision.gameObject.GetComponent<Gravity>();
 
         //The collided object that survives is either the more massive one, or arbitrarily decided
+
         if (this.rbody.mass > otherGrav.rbody.mass ||
             (this.rbody.mass == otherGrav.rbody.mass && Compare(otherGrav)))
         {
@@ -225,8 +226,7 @@ public class Gravity : MonoBehaviour
     bool Compare(Gravity other){
 
         return this.gameObject.transform.position.x > other.gameObject.transform.position.x
-            || this.gameObject.transform.position.y > other.gameObject.transform.position.y
-            || this.gameObject.transform.position.z > other.gameObject.transform.position.z;
+            ;
 
     }
 
